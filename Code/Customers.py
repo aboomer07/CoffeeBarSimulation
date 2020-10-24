@@ -24,7 +24,7 @@ import names # just for fun
 
 # set up menu of prices - maybe in other script?
 menu = {'sandwich': 2, 'cookie': 2, 'pie': 3, 'muffin': 3,
-        'milkshake': 5, 'frapuccino': 4, 'water': 2, 'coffee': 3, 'soda': 3, 'tea': 3,
+        'milkshake': 5, 'frappucino': 4, 'water': 2, 'coffee': 3, 'soda': 3, 'tea': 3,
         'nothing': 0}
 
 
@@ -33,17 +33,17 @@ class Customer(object):
         self.CustomerID = uuid.uuid4()  # less than a one in a trillion chance of repeating itself
         self.budget = 100
         self.name = names.get_first_name() # just for fun
-        #self.FoodChoiceHistory = []
-        #self.DrinkChoiceHistory = []
+        self.FoodChoiceHistory = []
+        self.DrinkChoiceHistory = []
     def chooseFood(self, HOUR, MINUTE):
         FoodChoice = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)]['max_prob']
         self.FoodChoice = FoodChoice.to_string(index=False).strip()
-        #self.FoodChoiceHistory = self.FoodChoiceHistory.append(self.FoodChoice)
+        self.FoodChoiceHistory.append(FoodChoice.to_string(index=False).strip())
         return(self.FoodChoice)
     def chooseDrink(self, HOUR, MINUTE):
         DrinkChoice = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)]['max_prob']
         self.DrinkChoice = DrinkChoice.to_string(index=False).strip()
-        #self.DrinkChoiceHistory = self.DrinkChoiceHistory.append(self.DrinkChoice)
+        self.DrinkChoiceHistory.append(DrinkChoice.to_string(index=False).strip())
         return (self.DrinkChoice)
     def showBudget(self):
         print(self.name + '\'s budget is ' + str(self.budget))
@@ -58,8 +58,8 @@ class ReturningCustomer(Customer):
     def __init__(self):
         super(ReturningCustomer, self).__init__()
         self.budget += 150
-    # def tellPurchaseHistory(self):
-    #     print(self.FoodChoiceHistory)
+    def tellPurchaseHistory(self):
+        print(self.FoodChoiceHistory)
 
 
 print(food_probs.head())
@@ -90,6 +90,8 @@ Cust2.chooseFood(8, 5)
 Cust2.chooseFood(13, 28)
 Cust2.chooseFood(13, 36)
 
+print(Cust2.tellPurchaseHistory())
+
 
 # One time customers: budget of 100€
 # If found through trip advisor: random tip between 1-10€
@@ -97,5 +99,3 @@ Cust2.chooseFood(13, 36)
 # All customers are able to buy drinks when given the correct (?) probability at that time as well as the prize of the food and drinks.
 # They are able to ‚tell‘ what they have bought (separate for food and drinks) and what they payed.
 # Returning customers keep track of their entire history of purchases.
-
-
