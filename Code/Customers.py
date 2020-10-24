@@ -18,6 +18,7 @@ from Customer_Probabilities import food_probs, drink_probs
 # Import libraries
 import uuid
 import names # just for fun
+from numpy import random
 
 # Each customer has a customerID and a certain budget. Based on the shape example in the slides the budget
 # is not introduced at the super class level.
@@ -61,6 +62,18 @@ class ReturningCustomer(Customer):
     def tellPurchaseHistory(self):
         print(self.FoodChoiceHistory)
 
+class Hipster(ReturningCustomer):
+    def __init__(self):
+        super(Hipster, self).__init__()
+        self.budget += 250
+
+class TripAdvisorCustomer(Customer):
+    def makePayment(self): # is overwirting a method bad style?
+        self.amount_spent = menu[self.FoodChoice] + menu[self.DrinkChoice] + random.randint(1, 10)
+        self.budget = self.budget - self.amount_spent
+
+# in this current set up we would no necessarily have to set up a class for one time customers - is this a mistake?
+
 
 print(food_probs.head())
 
@@ -91,6 +104,16 @@ Cust2.chooseFood(13, 28)
 Cust2.chooseFood(13, 36)
 
 print(Cust2.tellPurchaseHistory())
+
+Cust3 = Hipster()
+print(Cust3.showBudget())
+
+Cust4 = TripAdvisorCustomer()
+Cust4.chooseDrink(8, 5)
+Cust4.chooseFood(8, 5)
+Cust4.makePayment()
+print(Cust4.tellPurchase())  # amount customer spends is >3 so this works!
+
 
 
 # One time customers: budget of 100€
