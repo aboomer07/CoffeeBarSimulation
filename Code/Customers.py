@@ -14,7 +14,7 @@
 # print(sys.path)
 
 # import from exploratory script
-from Customer_Probabilities import food_probs, drink_probs
+from Code.Customer_Probabilities import food_probs, drink_probs
 # Import libraries
 import uuid
 import names # just for fun
@@ -61,6 +61,7 @@ class ReturningCustomer(Customer):
         self.budget += 150
     def tellPurchaseHistory(self):
         print(self.FoodChoiceHistory)
+        print(self.DrinkChoiceHistory)
 
 class Hipster(ReturningCustomer):
     def __init__(self):
@@ -75,10 +76,8 @@ class TripAdvisorCustomer(Customer):
 # in this current set up we would no necessarily have to set up a class for one time customers - is this a mistake?
 
 
-print(food_probs.head())
-
 Cust1 = Customer()
-print(Cust1.showBudget()) # Jacob has a budget of 100
+Cust1.showBudget()
 
 print(Cust1.chooseDrink(8, 5))
 print(Cust1.chooseFood(8, 5))  # in the morning he wants coffee and nothing to eat
@@ -91,28 +90,33 @@ print(Cust1.FoodChoice)
 print(Cust1.chooseDrink(12, 32))
 print(Cust1.chooseFood(12, 32))  # for lunch he wants soda and a sandwich
 
-print(Cust1.makePayment())
-print(Cust1.showBudget()) # soda and sandwich cost 5 in total, so this works. Note that the past choices have been
+Cust1.makePayment()
+Cust1.showBudget() # soda and sandwich cost 5 in total, so this works. Note that the past choices have been
 # overwritten
 
-print(Cust1.tellPurchase())
+Cust1.tellPurchase()
 
 Cust2 = ReturningCustomer()
-print(Cust2.showBudget())
+Cust2.showBudget()
 Cust2.chooseFood(8, 5)
 Cust2.chooseFood(13, 28)
 Cust2.chooseFood(13, 36)
 
-print(Cust2.tellPurchaseHistory())
+Cust2.tellPurchaseHistory()
 
 Cust3 = Hipster()
-print(Cust3.showBudget())
+Cust3.chooseDrink(12, 32)
+Cust3.chooseFood(12, 32)
+Cust3.chooseDrink(14, 28)
+Cust3.chooseFood(14, 28)
+Cust3.showBudget()
+Cust3.tellPurchaseHistory()
 
 Cust4 = TripAdvisorCustomer()
 Cust4.chooseDrink(8, 5)
 Cust4.chooseFood(8, 5)
 Cust4.makePayment()
-print(Cust4.tellPurchase())  # amount customer spends is >3 so this works!
+Cust4.tellPurchase()  # amount customer spends is >3 so this works!
 
 
 
