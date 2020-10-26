@@ -117,6 +117,7 @@ Cust4.chooseDrink(8, 5)
 Cust4.chooseFood(8, 5)
 Cust4.makePayment()
 Cust4.tellPurchase()  # amount customer spends is >3 so this works!
+print(Cust4.amount_spent)
 
 
 

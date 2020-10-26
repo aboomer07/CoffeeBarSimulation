@@ -11,6 +11,10 @@ ReturningCustomersPool.extend([Hipster() for j in range(333)])
 PurchaseTimes = food_probs[['HOUR', 'MINUTE']]
 
 # simulate one day:
+
+# record revenue
+revenue = []
+
 for HOUR, MINUTE in PurchaseTimes.itertuples(index=False):
     if random.random() <= 0.2:
         customer = random.choice(ReturningCustomersPool)
@@ -23,6 +27,10 @@ for HOUR, MINUTE in PurchaseTimes.itertuples(index=False):
     customer.chooseFood(HOUR, MINUTE)
     customer.makePayment()
     customer.tellPurchase()
+    revenue.append(customer.amount_spent)
+
+print(revenue)
+print(sum(revenue))
 
 
 
