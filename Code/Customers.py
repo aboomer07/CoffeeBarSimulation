@@ -34,18 +34,14 @@ class Customer(object):
         self.CustomerID = uuid.uuid4()  # less than a one in a trillion chance of repeating itself
         self.budget = 100
         self.name = names.get_first_name() # just for fun
-        self.FoodChoiceHistory = []
-        self.DrinkChoiceHistory = []
     def chooseFood(self, HOUR, MINUTE):
         FoodChoice = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)]['max_prob']
         self.FoodChoice = FoodChoice.to_string(index=False).strip()
-        self.FoodChoiceHistory.append(FoodChoice.to_string(index=False).strip())
-        return(self.FoodChoice)
+        return self.FoodChoice
     def chooseDrink(self, HOUR, MINUTE):
         DrinkChoice = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)]['max_prob']
         self.DrinkChoice = DrinkChoice.to_string(index=False).strip()
-        self.DrinkChoiceHistory.append(DrinkChoice.to_string(index=False).strip())
-        return (self.DrinkChoice)
+        return self.DrinkChoice
     def showBudget(self):
         print(self.name + '\'s budget is ' + str(self.budget))
     def makePayment(self):
@@ -59,9 +55,22 @@ class ReturningCustomer(Customer):
     def __init__(self):
         super(ReturningCustomer, self).__init__()
         self.budget += 150
+        self.FoodChoiceHistory = []
+        self.DrinkChoiceHistory = []
     def tellPurchaseHistory(self):
         print(self.FoodChoiceHistory)
         print(self.DrinkChoiceHistory)
+    def chooseFood(self, HOUR, MINUTE):
+        FoodChoice = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)]['max_prob']
+        self.FoodChoice = FoodChoice.to_string(index=False).strip()
+        self.FoodChoiceHistory.append(FoodChoice.to_string(index=False).strip())
+        return self.FoodChoice
+    def chooseDrink(self, HOUR, MINUTE):
+        DrinkChoice = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)]['max_prob']
+        self.DrinkChoice = DrinkChoice.to_string(index=False).strip()
+        self.DrinkChoiceHistory.append(DrinkChoice.to_string(index=False).strip())
+        return self.DrinkChoice
+
 
 class Hipster(ReturningCustomer):
     def __init__(self):
