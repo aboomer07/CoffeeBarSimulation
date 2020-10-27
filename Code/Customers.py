@@ -14,11 +14,11 @@
 # print(sys.path)
 
 # import from exploratory script
-from Code.Customer_Probabilities import food_probs, drink_probs
+from Code.Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
 # Import libraries
 import uuid
 import names # just for fun
-from numpy import random
+import numpy as np
 
 # Each customer has a customerID and a certain budget. Based on the shape example in the slides the budget
 # is not introduced at the super class level.
@@ -35,12 +35,15 @@ class Customer(object):
         self.budget = 100
         self.name = names.get_first_name() # just for fun
     def chooseFood(self, HOUR, MINUTE):
-        FoodChoice = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)]['max_prob']
-        self.FoodChoice = FoodChoice.to_string(index=False).strip()
+        prob = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)][food_list].values.tolist()[0]
+        FoodChoice = np.random.choice(food_list, 1, p=prob)[0]
+        self.FoodChoice = FoodChoice
+        self.Time = str(HOUR) + ':' + str(MINUTE) # this is ugly and needs to be changed
         return self.FoodChoice
     def chooseDrink(self, HOUR, MINUTE):
-        DrinkChoice = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)]['max_prob']
-        self.DrinkChoice = DrinkChoice.to_string(index=False).strip()
+        prob = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)][drink_list].values.tolist()[0]
+        DrinkChoice = np.random.choice(drink_list, 1, p=prob)[0]
+        self.DrinkChoice = DrinkChoice
         return self.DrinkChoice
     def showBudget(self):
         print(self.name + '\'s budget is ' + str(self.budget))
@@ -49,7 +52,7 @@ class Customer(object):
         self.budget = self.budget - self.amount_spent
     def tellPurchase(self):
         print(self.name + ' bought ' + self.DrinkChoice + ' and ' + self.FoodChoice + ' for a total price of ' +
-              str(self.amount_spent))
+              str(self.amount_spent) + ' at ' + self.Time)
 
 class ReturningCustomer(Customer):
     def __init__(self):
@@ -64,6 +67,7 @@ class ReturningCustomer(Customer):
         FoodChoice = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)]['max_prob']
         self.FoodChoice = FoodChoice.to_string(index=False).strip()
         self.FoodChoiceHistory.append(FoodChoice.to_string(index=False).strip())
+        self.Time = str(HOUR) + ':' + str(MINUTE) # this is ugly and needs to be changed
         return self.FoodChoice
     def chooseDrink(self, HOUR, MINUTE):
         DrinkChoice = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)]['max_prob']
@@ -79,7 +83,7 @@ class Hipster(ReturningCustomer):
 
 class TripAdvisorCustomer(Customer):
     def makePayment(self): # is overwirting a method bad style?
-        self.amount_spent = menu[self.FoodChoice] + menu[self.DrinkChoice] + random.randint(1, 10)
+        self.amount_spent = menu[self.FoodChoice] + menu[self.DrinkChoice] + np.random.randint(1, 10)
         self.budget = self.budget - self.amount_spent
 
 # in this current set up we would no necessarily have to set up a class for one time customers - is this a mistake?
@@ -127,6 +131,7 @@ Cust4.chooseFood(8, 5)
 Cust4.makePayment()
 Cust4.tellPurchase()  # amount customer spends is >3 so this works!
 print(Cust4.amount_spent)
+print(Cust4.CustomerID)
 
 
 
