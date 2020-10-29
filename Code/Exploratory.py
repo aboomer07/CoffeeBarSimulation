@@ -147,7 +147,7 @@ plt.show()
 ################################################################################
 
 ################################################################################
-#Percentage of Returning Customers by Week/Month
+#Percentage of One Time Customers by Year and Month
 df['OneTime'] = np.where(df['CUSTOMER'].isin(TimeFrame['CUSTOMER'].unique()),
 	0, 1)
 df['Month'] = df['TIME'].dt.month
