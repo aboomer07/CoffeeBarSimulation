@@ -14,7 +14,7 @@
 # print(sys.path)
 
 # import from exploratory script
-from Code.Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
+from Code.Customer_Probabilities import FoodProbs, DrinkProbs, FoodList, DrinkList
 # Import libraries
 import uuid
 import names # just for fun
@@ -35,14 +35,14 @@ class Customer(object):
         self.budget = 100
         self.name = names.get_first_name() # just for fun
     def chooseFood(self, HOUR, MINUTE):
-        prob = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)][food_list].values.tolist()[0]
-        FoodChoice = np.random.choice(food_list, 1, p=prob)[0]
+        prob = FoodProbs[(FoodProbs['HOUR'] == HOUR) & (FoodProbs['MINUTE'] == MINUTE)][FoodList].values.tolist()[0]
+        FoodChoice = np.random.choice(FoodList, 1, p=prob)[0]
         self.FoodChoice = FoodChoice
         self.Time = str(HOUR) + ':' + str(MINUTE) # this is ugly and needs to be changed
         return self.FoodChoice
     def chooseDrink(self, HOUR, MINUTE):
-        prob = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)][drink_list].values.tolist()[0]
-        DrinkChoice = np.random.choice(drink_list, 1, p=prob)[0]
+        prob = DrinkProbs[(DrinkProbs['HOUR'] == HOUR) & (DrinkProbs['MINUTE'] == MINUTE)][DrinkList].values.tolist()[0]
+        DrinkChoice = np.random.choice(DrinkList, 1, p=prob)[0]
         self.DrinkChoice = DrinkChoice
         return self.DrinkChoice
     def showBudget(self):
@@ -64,13 +64,13 @@ class ReturningCustomer(Customer):
         print(self.FoodChoiceHistory)
         print(self.DrinkChoiceHistory)
     def chooseFood(self, HOUR, MINUTE):
-        FoodChoice = food_probs[(food_probs['HOUR'] == HOUR) & (food_probs['MINUTE'] == MINUTE)]['max_prob']
+        FoodChoice = FoodProbs[(FoodProbs['HOUR'] == HOUR) & (FoodProbs['MINUTE'] == MINUTE)]['max_prob']
         self.FoodChoice = FoodChoice.to_string(index=False).strip()
         self.FoodChoiceHistory.append(FoodChoice.to_string(index=False).strip())
         self.Time = str(HOUR) + ':' + str(MINUTE) # this is ugly and needs to be changed
         return self.FoodChoice
     def chooseDrink(self, HOUR, MINUTE):
-        DrinkChoice = drink_probs[(drink_probs['HOUR'] == HOUR) & (drink_probs['MINUTE'] == MINUTE)]['max_prob']
+        DrinkChoice = DrinkProbs[(DrinkProbs['HOUR'] == HOUR) & (DrinkProbs['MINUTE'] == MINUTE)]['max_prob']
         self.DrinkChoice = DrinkChoice.to_string(index=False).strip()
         self.DrinkChoiceHistory.append(DrinkChoice.to_string(index=False).strip())
         return self.DrinkChoice
