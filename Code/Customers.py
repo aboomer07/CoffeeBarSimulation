@@ -86,6 +86,7 @@ class ReturningCustomer(Customer):
     def choose_drink(self, hour, minute):
         prob = drink_probs[(drink_probs['hour'] == hour) & (drink_probs['minute'] == minute)][drink_list].values.tolist()[0]
         drink_choice = np.random.choice(drink_list, 1, p=prob)[0]
+        self.drink_choice = drink_choice
         self.drink_choice_history.append(drink_choice)
         return self.drink_choice
 
