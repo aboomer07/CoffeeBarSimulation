@@ -12,41 +12,44 @@ import re
 import os
 import sys
 
-DataPath = os.path.abspath('..') + \
+data_path = os.path.abspath('..') + \
            "/Data/Coffeebar_2016-2020.csv"
 
-df = pd.read_csv(DataPath, sep=";")
+df = pd.read_csv(data_path, sep=";")
 ################################################################################
 
 ################################################################################
+# change column names to follow pep8
+df.columns = ['time', 'customer', 'drinks', 'food']
+
 # Perform initial data manipulation
-df['TIME'] = pd.to_datetime(df['TIME'], format="%Y-%m-%d %H:%M:%S")
-df['HOUR'] = df['TIME'].dt.hour  # Get Hour Integer
-df['MINUTE'] = df['TIME'].dt.minute  # Get Minute Integer
-df['YEAR'] = df['TIME'].dt.year  # Get Year Integer
+df['time'] = pd.to_datetime(df['time'], format="%Y-%m-%d %H:%M:%S")
+df['hour'] = df['time'].dt.hour  # Get hour Integer
+df['minute'] = df['time'].dt.minute  # Get minute Integer
+df['year'] = df['time'].dt.year  # Get year Integer
 
-df['FOOD'] = df['FOOD'].fillna("nothing")  # A null value means no food ordered
+df['food'] = df['food'].fillna("nothing")  # A null value means no food ordered
 ################################################################################
 
 ################################################################################
 # What food and drink are sold?
-DrinkList = df['DRINKS'].unique()  # Get the unique list of possible drinks
-FoodList = df['FOOD'].unique()  # Get unique list of possible food items
+drink_list = df['drinks'].unique()  # Get the unique list of possible drinks
+food_list = df['food'].unique()  # Get unique list of possible food items
 
 # How many unique customers did the bar have?
-CustomerList = df['CUSTOMER'].unique()  # Unique set of customers ID's
+customer_list = df['customer'].unique()  # Unique set of customers ID's
 ################################################################################
 
 ################################################################################
-# Calculating Probabilities For Food and Drinks per 5-Minute Interval
+# Calculating Probabilities For food and drinks per 5-minute Interval
 # Use Value Counts to Calculate
-FoodProbs = df.groupby(['HOUR', 'MINUTE'])['FOOD']. \
+food_probs = df.groupby(['hour', 'minute'])['food']. \
     value_counts(normalize=True). \
     unstack(fill_value=0). \
     reset_index(). \
     rename_axis(None, axis=1)
 
-DrinkProbs = df.groupby(['HOUR', 'MINUTE'])['DRINKS']. \
+drink_probs = df.groupby(['hour', 'minute'])['drinks']. \
     value_counts(normalize=True). \
     unstack(fill_value=0). \
     reset_index(). \

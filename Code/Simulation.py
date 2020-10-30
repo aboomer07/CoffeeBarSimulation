@@ -8,14 +8,14 @@ ReturningCustomersPool = [ReturningCustomer() for i in range(777)]
 ReturningCustomersPool.extend([Hipster() for j in range(333)])
 
 # get hour/minute pairs of the day
-PurchaseTimes = food_probs[['HOUR', 'MINUTE']]
+purchase_times = food_probs[['hour', 'minute']]
 
 # simulate one day:
 
 # record revenue
 revenue = []
 
-for HOUR, MINUTE in PurchaseTimes.itertuples(index=False):
+for hour, minute in purchase_times.itertuples(index=False):
     if random.random() <= 0.2:
         customer = random.choice(ReturningCustomersPool)
     else:
@@ -23,10 +23,10 @@ for HOUR, MINUTE in PurchaseTimes.itertuples(index=False):
             customer = TripAdvisorCustomer()
         else:
             customer = Customer()
-    customer.chooseDrink(HOUR, MINUTE)
-    customer.chooseFood(HOUR, MINUTE)
-    customer.makePayment()
-    customer.tellPurchase()
+    customer.choose_drink(hour, minute)
+    customer.choose_food(hour, minute)
+    customer.make_payment()
+    customer.tell_purchase()
     revenue.append(customer.amount_spent)
 
 print(revenue)
