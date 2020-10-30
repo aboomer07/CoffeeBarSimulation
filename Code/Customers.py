@@ -8,13 +8,13 @@
 # flexibility. We might think about altering hipsters' purchase probabilities for question 4 (e.g.
 # they want to be different from the mainstream and choose product with lowest purchase probability)
 
-# import sys
-# import os
-# sys.path.insert(0, os.path.abspath('.') + '/Code')
-# print(sys.path)
+import sys
+import os
+sys.path.insert(0, os.path.abspath('.') + '/Code')
+print(sys.path)
 
 # import from exploratory script
-from Code.Customer_Probabilities import FoodProbs, DrinkProbs, FoodList, DrinkList
+from Customer_Probabilities import FoodProbs, DrinkProbs, FoodList, DrinkList
 # Import libraries
 import uuid
 import names  # just for fun
@@ -72,16 +72,18 @@ class ReturningCustomer(Customer):
         print(self.DrinkChoiceHistory)
 
     def chooseFood(self, HOUR, MINUTE):
-        FoodChoice = FoodProbs[(FoodProbs['HOUR'] == HOUR) & (FoodProbs['MINUTE'] == MINUTE)]['max_prob']
-        self.FoodChoice = FoodChoice.to_string(index=False).strip()
-        self.FoodChoiceHistory.append(FoodChoice.to_string(index=False).strip())
+        prob = FoodProbs[(FoodProbs['HOUR'] == HOUR) & (FoodProbs['MINUTE'] == MINUTE)][FoodList].values.tolist()[0]
+        FoodChoice = np.random.choice(FoodList, 1, p=prob)[0]
+        self.FoodChoice = FoodChoice
+        self.FoodChoiceHistory.append(FoodChoice)
         self.Time = str(HOUR) + ':' + str(MINUTE)  # this is ugly and needs to be changed
         return self.FoodChoice
 
     def chooseDrink(self, HOUR, MINUTE):
-        DrinkChoice = DrinkProbs[(DrinkProbs['HOUR'] == HOUR) & (DrinkProbs['MINUTE'] == MINUTE)]['max_prob']
-        self.DrinkChoice = DrinkChoice.to_string(index=False).strip()
-        self.DrinkChoiceHistory.append(DrinkChoice.to_string(index=False).strip())
+        prob = DrinkProbs[(DrinkProbs['HOUR'] == HOUR) & (DrinkProbs['MINUTE'] == MINUTE)][DrinkList].values.tolist()[0]
+        DrinkChoice = np.random.choice(DrinkList, 1, p=prob)[0]
+        self.DrinkChoice = DrinkChoice
+        self.DrinkChoiceHistory.append(DrinkChoice)
         return self.DrinkChoice
 
 
