@@ -1,5 +1,8 @@
 from Code.Customers import *
-from Code.Customer_Probabilities import food_probs
+from Code.Customer_Probabilities import FoodProbs
+
+# from Customers import *
+# from Customer_Probabilities import FoodProbs
 
 import random
 
@@ -8,7 +11,7 @@ ReturningCustomersPool = [ReturningCustomer() for i in range(777)]
 ReturningCustomersPool.extend([Hipster() for j in range(333)])
 
 # get hour/minute pairs of the day
-PurchaseTimes = food_probs[['HOUR', 'MINUTE']]
+PurchaseTimes = FoodProbs[['HOUR', 'MINUTE']]
 
 # simulate one day:
 
