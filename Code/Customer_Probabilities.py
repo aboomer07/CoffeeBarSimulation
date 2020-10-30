@@ -13,7 +13,7 @@ import os
 import sys
 
 data_path = os.path.abspath('..') + \
-           "/Data/Coffeebar_2016-2020.csv"
+            "/Data/Coffeebar_2016-2020.csv"
 
 df = pd.read_csv(data_path, sep=";")
 ################################################################################

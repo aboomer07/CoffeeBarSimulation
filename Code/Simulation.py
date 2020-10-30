@@ -23,8 +23,7 @@ for hour, minute in purchase_times.itertuples(index=False):
             customer = TripAdvisorCustomer()
         else:
             customer = Customer()
-    customer.choose_drink(hour, minute)
-    customer.choose_food(hour, minute)
+    customer.make_choice(hour, minute)
     customer.make_payment()
     customer.tell_purchase()
     revenue.append(customer.amount_spent)
