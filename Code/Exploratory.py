@@ -95,6 +95,8 @@ plt.xticks(rotation=45)  # Rotate the x axis ticks for ease of viewing
 ax.xaxis.set_major_locator(plt.MaxNLocator(14))
 # Set the title and show the plot
 ax.set_title("Proportion of Food Items Purchased Throughout a Day")
+ax.set_xlabel("Time of Day")  # Set x-axis title
+ax.set_ylabel("Percentage of Food Purchases")  # Set y-axis title
 plt.show()
 
 # Get the time variable for to be used in the graph
@@ -114,6 +116,8 @@ plt.xticks(rotation=45)  # Rotate the x axis ticks
 ax.xaxis.set_major_locator(plt.MaxNLocator(14))
 # Set the title and show the plot
 ax.set_title("Proportion of Drinks Purchased Throughout a Day")
+ax.set_xlabel("Time of Day")  # Set x-axis title
+ax.set_ylabel("Percentage of Drink Purchases")  # Set y-axis title
 plt.show()
 ################################################################################
 
@@ -150,6 +154,8 @@ plt.plot(cum_rev['index'], cum_rev['revenue'],
 plt.plot(cum_rev['index'], cum_rev['index'], label="45 Degree Line")
 plt.legend(loc="upper left")
 ax.set_title("Inequality Distribution of Total Spending by Customer")
+ax.set_xlabel("Percentile of Customer Index")  # Set x-axis title
+ax.set_ylabel("Percentile of Total Revenue")  # Set y-axis title
 plt.show()
 ################################################################################
 
@@ -175,6 +181,8 @@ fig, ax = plt.subplots(ncols=1, nrows=1)
 plt.plot(sorted(time_frame.groupby('customer')['time_diff'].mean().values))
 # Set title and show the plot
 ax.set_title("Mean Time Between Visits for Returning Customers")
+ax.set_xlabel("Ordered Index of Returning Customers")  # Set x-axis title
+ax.set_ylabel("Mean Time Between Visits (Days)")  # Set y-axis title
 plt.show()
 ################################################################################
 
