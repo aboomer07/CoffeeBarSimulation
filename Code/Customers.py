@@ -37,12 +37,12 @@ class Customer(object):
 
         # Use the food list and probabilities to make a food choice
         food_prob = food_probs[(food_probs['hour'] == hour) & (
-            food_probs['minute'] == minute)][food_list].values.tolist()[0]
+                food_probs['minute'] == minute)][food_list].values.tolist()[0]
         food_choice = np.random.choice(food_list, 1, p=food_prob)[0]
 
         # Use the drink list and probabilities to make a drink choice
         drink_prob = drink_probs[(drink_probs['hour'] == hour) & (
-            drink_probs['minute'] == minute)][drink_list].values.tolist()[0]
+                drink_probs['minute'] == minute)][drink_list].values.tolist()[0]
         drink_choice = np.random.choice(drink_list, 1, p=drink_prob)[0]
 
         # Overwrite the initialized variables
@@ -78,8 +78,9 @@ class ReturningCustomer(Customer):  # Define a returning customer
         self.amount_spent = menu[self.food_choice] + menu[self.drink_choice]
         self.budget = self.budget - self.amount_spent
         self.visit += 1  # Increase the visit variable by 1
-        history = {  # Create a new entry in the dict for the current visit
-            'customer_id': self.customer_id, self.time: [self.drink_choice, self.food_choice]}
+        history = {
+            'customer_id': self.customer_id, 'customer_name': self.name,
+            self.time: [self.drink_choice, self.food_choice]}
         self.history.update(history)
 
     def tell_purchase_history(self):
@@ -98,7 +99,7 @@ class TripAdvisorCustomer(Customer):
     # Trip advisor customer is a subclass of customer that adds a random tip to purchase
     def make_payment(self):
         self.amount_spent = menu[self.food_choice] + \
-            menu[self.drink_choice] + np.random.randint(1, 10)
+                            menu[self.drink_choice] + np.random.randint(1, 10)
         self.budget = self.budget - self.amount_spent
 
 
