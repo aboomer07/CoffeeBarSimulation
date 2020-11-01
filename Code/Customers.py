@@ -4,21 +4,15 @@
 # Part 2 involves setting up customer classes
 ################################################################################
 
-# Sidenote: I would propose to add hipsters as a subclass too, in order to allow for additional
-# flexibility. We might think about altering hipsters' purchase probabilities for question 4 (e.g.
-# they want to be different from the mainstream and choose product with lowest purchase probability)
 
+# import probabilities and lists of things offered at the coffee shop
+from Code.Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
 
-# import from exploratory script
-from Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
 # Import libraries
 import uuid
-import names  # just for fun
+import names  # just for fun, can be installed with sudo pip
 import numpy as np
 import datetime  # For getting hour and minute from datetime objects
-
-# Each customer has a customer_id and a certain budget. Based on the shape example in the slides the budget
-# is not introduced at the super class level.
 
 # set up menu of prices - maybe in other script?
 menu = {'sandwich': 2, 'cookie': 2, 'pie': 3, 'muffin': 3, 'milkshake': 5,
@@ -85,7 +79,7 @@ class ReturningCustomer(Customer):  # Define a returning customer
         self.budget = self.budget - self.amount_spent
         self.visit += 1  # Increase the visit variable by 1
         history = {  # Create a new entry in the dict for the current visit
-            'Visit ' + str(self.visit): [self.drink_choice, self.food_choice, str(self.time)]}
+            'customer_id': self.customer_id, self.time: [self.drink_choice, self.food_choice]}
         self.history.update(history)
 
     def tell_purchase_history(self):
@@ -101,7 +95,7 @@ class Hipster(ReturningCustomer):
 
 
 class TripAdvisorCustomer(Customer):
-    # Trip advisor is a subclass of customer that adds a random tip to purchase
+    # Trip advisor customer is a subclass of customer that adds a random tip to purchase
     def make_payment(self):
         self.amount_spent = menu[self.food_choice] + \
             menu[self.drink_choice] + np.random.randint(1, 10)
