@@ -78,9 +78,7 @@ class ReturningCustomer(Customer):  # Define a returning customer
         self.amount_spent = menu[self.food_choice] + menu[self.drink_choice]
         self.budget = self.budget - self.amount_spent
         self.visit += 1  # Increase the visit variable by 1
-        history = {
-            'customer_id': self.customer_id, 'customer_name': self.name,
-            self.time: [self.drink_choice, self.food_choice]}
+        history = {'customer_name': self.name, self.time: [self.drink_choice, self.food_choice]}
         self.history.update(history)
 
     def tell_purchase_history(self):

@@ -15,9 +15,9 @@ purchase_times = df[df['year'] == 2016]['time']
 
 # record revenue
 revenue = []
-regulars_history = []
+regulars_history = {}
 
-for time in purchase_times[1:200]:  # restrict simulation period for now
+for time in purchase_times[1:1000]:  # restrict simulation period for now
     if random.random() <= 0.2:
         customer = random.choice(ReturningCustomersPool)
         while customer.budget < menu['milkshake'] + menu['pie']:
@@ -33,25 +33,14 @@ for time in purchase_times[1:200]:  # restrict simulation period for now
     customer.make_payment()
     revenue.append(customer.amount_spent)
     try:
-        regulars_history.append(customer.history)
+        regulars_history[customer.customer_id] = customer.history
     except AttributeError:
         continue
 
 print(sum(revenue))
 
-for history in regulars_history:
-    for key, value in history.items():
-        print(key, value)
-# apparently if I make multiple purchases the complete history gets stored multiple times?
-
-print(len(regulars_history))
-
-unique_histories = []
-for history in regulars_history:
-    if history not in unique_histories:
-        unique_histories.append(history)
-
-print(len(unique_histories))
+for key, value in regulars_history.items():
+    print(key, value)
 
 
 
