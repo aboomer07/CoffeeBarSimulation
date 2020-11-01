@@ -51,17 +51,9 @@ class Customer(object):
             drink_probs['minute'] == minute)][drink_list].values.tolist()[0]
         drink_choice = np.random.choice(drink_list, 1, p=drink_prob)[0]
 
-        # We need to see if the customer has the budget for their choices
-        if self.budget - (menu[food_choice] + menu[drink_choice]) >= 0:
-            # Overwrite the initialized variables
-            self.food_choice = food_choice
-            self.drink_choice = drink_choice
-        else:
-            # If customer can't afford, they should choose nothing
-            # This will return an error when they try to make a payment
-            # This error can be handled in the simulation with a try statement
-            self.food_choice = None
-            self.drink_choice = None
+        # Overwrite the initialized variables
+        self.food_choice = food_choice
+        self.drink_choice = drink_choice
         self.time = time
 
     def show_budget(self):
