@@ -24,7 +24,6 @@ for time in purchase_times[1:200]:  # restrict simulation period for now
             print(customer.name + ' has been kicked out because he/she is poor!')  # this works (lower budget to test)
             ReturningCustomersPool.pop(ReturningCustomersPool.index(customer))  # customer gets removed
             customer = random.choice(ReturningCustomersPool)
-        regulars_history.append(customer.history)
     else:
         if random.random() <= 0.1:
             customer = TripAdvisorCustomer()
@@ -33,6 +32,10 @@ for time in purchase_times[1:200]:  # restrict simulation period for now
     customer.make_choice(time)
     customer.make_payment()
     revenue.append(customer.amount_spent)
+    try:
+        regulars_history.append(customer.history)
+    except AttributeError:
+        continue
 
 print(sum(revenue))
 
@@ -49,12 +52,6 @@ for history in regulars_history:
         unique_histories.append(history)
 
 print(len(unique_histories))
-
-# why is this not printing anything?
-for history in regulars_history:
-    if history not in unique_histories:
-        for key, value in history.items():
-            print(key, value)
 
 
 
