@@ -23,6 +23,7 @@ class Customer(object):
     def __init__(self):
         # less than a one in a trillion chance of repeating itself
         self.customer_id = uuid.uuid4()
+        self.customer_type = 'one_time'
         self.budget = 100
         self.name = names.get_first_name()  # just for fun
         # initialize variables for the customer
@@ -69,6 +70,7 @@ class Customer(object):
 class ReturningCustomer(Customer):  # Define a returning customer
     def __init__(self):
         super(ReturningCustomer, self).__init__()
+        self.customer_type = 'returning'
         self.budget += 150  # they have a higher budget
         self.history = {}  # They also can remember their purchase history
         self.visit = 0  # Keep track of their current visit number
@@ -90,11 +92,15 @@ class Hipster(ReturningCustomer):
     # In case we want the hipster to have some different behavior later
     def __init__(self):
         super(Hipster, self).__init__()
+        self.customer_type = 'hipster'
         self.budget += 250  # Hipsters have an even larger budget
 
 
 class TripAdvisorCustomer(Customer):
     # Trip advisor customer is a subclass of customer that adds a random tip to purchase
+    def __init__(self):
+        super(TripAdvisorCustomer, self).__init__()
+        self.customer_type = 'trip_advisor'
     def make_payment(self):
         self.amount_spent = menu[self.food_choice] + \
                             menu[self.drink_choice] + np.random.randint(1, 10)
