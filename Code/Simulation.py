@@ -42,7 +42,6 @@ def run_simulation(df):
 
     for i in range(sims):  # restrict simulation period for now
         t = timespan[i]
-        # cond = datetime.datetime.now()
         if random.random() <= 0.2:
             customer = random.choice(ReturningCustomersPool)
             while customer.budget < menu['milkshake'] + menu['pie']:
@@ -61,8 +60,6 @@ def run_simulation(df):
         customer.make_choice(t, food_array[i], drink_array[i])
 
         customer.make_payment()
-
-        # print(customer.customer_id)
 
         customer_id[i] = customer.customer_id
         name[i] = customer.name
@@ -86,7 +83,7 @@ def run_simulation(df):
 
 a = datetime.datetime.now()
 c_hist, r_hist = run_simulation(purchase_times)
-print((datetime.datetime.now() - a).seconds)
+print((datetime.datetime.now() - a).microseconds)
 
 for key, value in r_hist.items():
     print(key, value)
