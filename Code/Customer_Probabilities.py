@@ -13,7 +13,7 @@ import os
 import sys
 
 data_path = os.path.abspath('..') + \
-            "/Data/Coffeebar_2016-2020.csv"
+    "/Data/Coffeebar_2016-2020.csv"
 
 df = pd.read_csv(data_path, sep=";")
 ################################################################################
@@ -33,8 +33,10 @@ df['food'] = df['food'].fillna("nothing")  # A null value means no food ordered
 
 ################################################################################
 # What food and drink are sold?
-drink_list = df['drinks'].unique()  # Get the unique list of possible drinks
-food_list = df['food'].unique()  # Get unique list of possible food items
+# Get the unique list of drinks
+drink_list = np.sort(np.array(df['drinks'].unique()))
+# Get unique list of food items
+food_list = np.sort((np.array(df['food'].unique())))
 
 # How many unique customers did the bar have?
 customer_list = df['customer'].unique()  # Unique set of customers ID's
