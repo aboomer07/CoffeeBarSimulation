@@ -83,7 +83,7 @@ def run_simulation(df):
 
 a = datetime.datetime.now()
 c_hist, r_hist = run_simulation(purchase_times)
-print((datetime.datetime.now() - a).microseconds)
+print((datetime.datetime.now() - a).seconds)
 
 for key, value in r_hist.items():
     print(key, value)
