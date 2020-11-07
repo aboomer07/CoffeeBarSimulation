@@ -15,8 +15,6 @@ def run_simulation(df):
     ReturningCustomersPool = [ReturningCustomer() for i in range(667)]
     ReturningCustomersPool.extend([Hipster() for j in range(333)])
 
-    popped = []
-
     sims = df.shape[0]
 
     customer_id = np.empty(sims, dtype=object)
@@ -52,7 +50,7 @@ def run_simulation(df):
                 # print(customer.name + ' has been kicked out because he/she is poor!')
                 ReturningCustomersPool.pop(ReturningCustomersPool.index(
                     customer))  # customer gets removed
-                popped.append(customer)
+
                 customer = random.choice(ReturningCustomersPool)
         else:
             if random.random() <= 0.1:
@@ -83,11 +81,11 @@ def run_simulation(df):
 
     coffee_shop_history = pd.DataFrame(coffee_shop_history)
 
-    return coffee_shop_history, regulars_history, popped
+    return coffee_shop_history, regulars_history
 
 
 a = datetime.datetime.now()
-c_hist, r_hist, popped = run_simulation(purchase_times)
+c_hist, r_hist = run_simulation(purchase_times)
 print((datetime.datetime.now() - a).seconds)
 
 for key, value in r_hist.items():
