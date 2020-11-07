@@ -6,7 +6,7 @@
 
 
 # import probabilities and lists of things offered at the coffee shop
-from Code.Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
+from Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
 
 # Import libraries
 import uuid
@@ -32,19 +32,21 @@ class Customer(object):
         self.amount_spent = None
         self.time = None
 
-    def make_choice(self, time):
-        hour = time.hour  # Get the hour to be used in probability
-        minute = time.minute  # Get the minute to be used in probability
+    def make_choice(self, time, food_choice, drink_choice):
+        # hour = time.hour  # Get the hour to be used in probability
+        # minute = time.minute  # Get the minute to be used in probability
 
         # Use the food list and probabilities to make a food choice
-        food_prob = food_probs[(food_probs['hour'] == hour) & (
-                food_probs['minute'] == minute)][food_list].values.tolist()[0]
-        food_choice = np.random.choice(food_list, 1, p=food_prob)[0]
+        # food_prob = food_probs[(food_probs['hour'] == hour) & (
+        #     food_probs['minute'] == minute)][food_list].values.tolist()[0]
+        # food_choice = np.random.choice(
+        #     list(food_prob.keys()), 1, p=list(food_prob.values()))[0]
 
         # Use the drink list and probabilities to make a drink choice
-        drink_prob = drink_probs[(drink_probs['hour'] == hour) & (
-                drink_probs['minute'] == minute)][drink_list].values.tolist()[0]
-        drink_choice = np.random.choice(drink_list, 1, p=drink_prob)[0]
+        # drink_prob = drink_probs[(drink_probs['hour'] == hour) & (
+        #     drink_probs['minute'] == minute)][drink_list].values.tolist()[0]
+        # drink_choice = np.random.choice(
+        #     list(drink_prob.keys()), 1, p=list(drink_prob.values()))[0]
 
         # Overwrite the initialized variables
         self.food_choice = food_choice
@@ -80,7 +82,8 @@ class ReturningCustomer(Customer):  # Define a returning customer
         self.amount_spent = menu[self.food_choice] + menu[self.drink_choice]
         self.budget = self.budget - self.amount_spent
         self.visit += 1  # Increase the visit variable by 1
-        history = {'customer_name': self.name, self.time: [self.drink_choice, self.food_choice]}
+        history = {'customer_name': self.name, self.time: [
+            self.drink_choice, self.food_choice]}
         self.history.update(history)
 
     def tell_purchase_history(self):
@@ -101,9 +104,10 @@ class TripAdvisorCustomer(Customer):
     def __init__(self):
         super(TripAdvisorCustomer, self).__init__()
         self.customer_type = 'trip_advisor'
+
     def make_payment(self):
         self.amount_spent = menu[self.food_choice] + \
-                            menu[self.drink_choice] + np.random.randint(1, 10)
+            menu[self.drink_choice] + np.random.randint(1, 10)
         self.budget = self.budget - self.amount_spent
 
 
@@ -111,12 +115,18 @@ class TripAdvisorCustomer(Customer):
 time1 = datetime.datetime(2020, 6, 25, 8, 0, 0)
 time2 = datetime.datetime(2020, 10, 10, 14, 32, 0)
 
-Cust3 = Hipster()  # Create hipster returning customer
+# food_probs_1 = food_probs[(food_probs['hour'] == time1.hour) & (
+#     food_probs['minute'] == time1.minute)]['food_prob'].values[0]
+# drink_probs_1 = drink_probs[(drink_probs['hour'] == time1.hour) & (
+#     drink_probs['minute'] == time1.minute)]['drink_prob'].values[0]
 
-Cust3.make_choice(time1)  # Have them make their first choice
-Cust3.make_payment()  # Make the payment based on the choice
-Cust3.tell_purchase_history()  # Return their history
+# Cust3 = Hipster()  # Create hipster returning customer
 
-Cust3.make_choice(time2)  # They visit again at another time
-Cust3.make_payment()  # They make the payment for current visit
-Cust3.tell_purchase_history()  # They have a new updated history
+# Have them make their first choice
+# Cust3.make_choice(time1, food_probs_1, drink_probs_1)
+# Cust3.make_payment()  # Make the payment based on the choice
+# Cust3.tell_purchase_history()  # Return their history
+
+# Cust3.make_choice(time2)  # They visit again at another time
+# Cust3.make_payment()  # They make the payment for current visit
+# Cust3.tell_purchase_history()  # They have a new updated history
