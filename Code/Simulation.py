@@ -1,89 +1,123 @@
+from SimParams import Sim1, Sim2, Sim3, Sim4, Sim5
 from Customers import *
 from Customer_Probabilities import df
 
 import random
 import pandas as pd
 import numpy as np
+import math
 
 # get hour/minute pairs of the day
-purchase_times = df[['time', 'year', 'hour', 'minute']]
+sim_df = df[['time', 'year', 'hour', 'minute']][:30000]
 
 
-def run_simulation(df):
+def run_simulation(data, params):
 
-    # set up pool of 1000 returning customers (1/3 hipsters)
-    ReturningCustomersPool = [ReturningCustomer() for i in range(667)]
-    ReturningCustomersPool.extend([Hipster() for j in range(333)])
+    data = data.copy(deep=True)
 
-    sims = df.shape[0]
+    sims = data.shape[0]
 
-    customer_id = np.empty(sims, dtype=object)
-    name = np.empty(sims, dtype=object)
+    data_params = params['data_params'].copy()
+    class_params = params['class_params'].copy()
+
+    data_params['menus'] = data_params['menus'][:sims]
+
+    customers = np.empty(sims, dtype=object)
     customer_type = np.empty(sims, dtype=object)
-    total_amount = np.empty(sims)
+    customer_id = np.empty(sims, dtype=object)
+    names = np.empty(sims, dtype=object)
+    pool_size = np.empty(sims, dtype=np.int64)
+    food_choices = np.empty(sims, dtype=object)
+    drink_choices = np.empty(sims, dtype=object)
+    payments = np.empty(sims, dtype=np.float64)
+    budget = np.empty(sims, dtype=np.float64)
 
-    df = pd.merge(df, food_probs,
-                  how='left', on=['hour', 'minute'])
-    df = pd.merge(df, drink_probs,
-                  how='left', on=['hour', 'minute'])
+    data = pd.merge(data, food_probs,
+                    how='left', on=['hour', 'minute'])
+    data = pd.merge(data, drink_probs,
+                    how='left', on=['hour', 'minute'])
 
-    df['food_choice'] = food_list[(np.random.rand(
-        sims, 1) < df[food_list].cumsum(axis=1).values).argmax(axis=1)]
+    data['foods'] = data[food_list].to_dict(orient='records')
+    data['drinks'] = data[drink_list].to_dict(orient='records')
 
-    df['drink_choice'] = drink_list[(np.random.rand(
-        sims, 1) < df[drink_list].cumsum(axis=1).values).argmax(axis=1)]
+    num_returns = class_params['num_returns']
+    num_hipsters = math.ceil(num_returns / 3)
+    num_returns -= num_hipsters
 
-    drink_array = np.array(df['drink_choice'])
-    food_array = np.array(df['food_choice'])
-    timespan = np.array(df['time'])
+    # set up pool of returning customers (1/3 hipsters)
+    ReturningCustomersPool = [ReturningCustomer(
+        class_params) for i in range(num_returns)]
 
-    # record history of returning customers
-    regulars_history = {}
+    ReturningCustomersPool.extend([Hipster(class_params)
+                                   for j in range(num_hipsters)])
+
+    drink_array = np.array(data['drinks'])
+    food_array = np.array(data['foods'])
+    timespan = np.array(data['time'])
 
     for i in range(sims):  # restrict simulation period for now
-        t = timespan[i]
-        if random.random() <= 0.2:
-            customer = random.choice(ReturningCustomersPool)
-            while customer.budget < menu['milkshake'] + menu['pie']:
-                # this works (lower budget to test)
-                # print(customer.name + ' has been kicked out because he/she is poor!')
-                ReturningCustomersPool.pop(ReturningCustomersPool.index(
-                    customer))  # customer gets removed
 
+        menu = data_params['menus'][i]
+        t = timespan[i]
+        pool_size[i] = len(ReturningCustomersPool)
+
+        if random.random() <= 0.2:
+            if pool_size[i] > 0:
                 customer = random.choice(ReturningCustomersPool)
+                while customer.budget < menu['milkshake'] + menu['pie']:
+                    ReturningCustomersPool.pop(ReturningCustomersPool.index(
+                        customer))  # customer gets removed
+                    try:
+                        customer = random.choice(ReturningCustomersPool)
+                    except IndexError:
+                        customer = EmptyInterval(class_params)
+            else:
+                customer = EmptyInterval(class_params)
         else:
             if random.random() <= 0.1:
-                customer = TripAdvisorCustomer()
+                customer = TripAdvisorCustomer(class_params)
             else:
-                customer = Customer()
+                customer = Customer(class_params)
 
         customer.make_choice(t, food_array[i], drink_array[i])
+        customer.make_payment(menu)
 
-        customer.make_payment()
-
-        customer_id[i] = customer.customer_id
-        name[i] = customer.name
+        customers[i] = customer
+        customer_id[i] = str(customer.customer_id)
+        names[i] = customer.name
         customer_type[i] = customer.customer_type
-        total_amount[i] = customer.amount_spent
+        food_choices[i] = customer.food_choice
+        drink_choices[i] = customer.drink_choice
+        payments[i] = customer.amount_spent
+        budget[i] = customer.budget
 
-        try:
-            regulars_history[customer.customer_id] = customer.history
-        except AttributeError:
-            continue
-
-    coffee_shop_history = {'time': timespan,
-                           'customer_id': customer_id, 'name': name,
-                           'customer_type': customer_type, 'food': food_array,
-                           'drink': drink_array, 'total_amount': total_amount}
+    coffee_shop_history = {
+        'time': timespan, 'customer': customers, 'customer_id': customer_id,
+        'ReturnsSize': pool_size, 'name': names, 'customer_type': customer_type,
+        'food': food_choices, 'drinks': drink_choices, 'payments': payments,
+        'budget': budget}
 
     coffee_shop_history = pd.DataFrame(coffee_shop_history)
 
-    return coffee_shop_history, regulars_history
+    return coffee_shop_history
 
 
 a = datetime.datetime.now()
-c_hist, r_hist = run_simulation(purchase_times)
+sim1_df = run_simulation(sim_df, Sim1)
 print((datetime.datetime.now() - a).seconds)
 
-for key, value in r_hist.items():
-    print(key, value)
+a = datetime.datetime.now()
+sim2_df = run_simulation(sim_df, Sim2)
+print((datetime.datetime.now() - a).seconds)
+
+a = datetime.datetime.now()
+sim3_df = run_simulation(sim_df, Sim3)
+print((datetime.datetime.now() - a).seconds)
+
+a = datetime.datetime.now()
+sim4_df = run_simulation(sim_df, Sim4)
+print((datetime.datetime.now() - a).seconds)
+
+a = datetime.datetime.now()
+sim5_df = run_simulation(sim_df, Sim5)
+print((datetime.datetime.now() - a).seconds)
