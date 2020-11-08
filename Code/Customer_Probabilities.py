@@ -32,14 +32,12 @@ df['food'] = df['food'].fillna("nothing")  # A null value means no food ordered
 ################################################################################
 
 ################################################################################
-# What food and drink are sold?
+
 # Get the unique list of drinks
 drink_list = np.sort(np.array(df['drinks'].unique()))
 # Get unique list of food items
 food_list = np.sort((np.array(df['food'].unique())))
 
-# How many unique customers did the bar have?
-customer_list = df['customer'].unique()  # Unique set of customers ID's
 ################################################################################
 
 ################################################################################

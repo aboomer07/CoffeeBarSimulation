@@ -1,5 +1,5 @@
 import numpy as np
-from Customer_Probabilities import df
+from Code.Customer_Probabilities import df
 
 menu = {'sandwich': 2, 'cookie': 2, 'pie': 3, 'muffin': 3, 'milkshake': 5,
         'frappucino': 4, 'water': 2, 'coffee': 3, 'soda': 3, 'tea': 3, 'nothing': 0}

@@ -1,17 +1,18 @@
 ################################################################################
-# Part 1 of Python Final Project: Simulation of Coffee Drinkers
+# Part 2 of Python Final Project: Simulation of Coffee Drinkers
 # Group Partners: Andy Boomer and Jacob Pichelmann
 # Part 2 involves setting up customer classes
 ################################################################################
 
 
 # import probabilities and lists of things offered at the coffee shop
-from Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
+from Code.Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
 
 # Import libraries
 import uuid
 import names  # just for fun, can be installed with sudo pip
 import numpy as np
+import pandas as pd
 import datetime  # For getting hour and minute from datetime objects
 
 
@@ -52,7 +53,7 @@ class Customer(object):
     def tell_purchase(self):
         # Display what the customer purchased and at what time
         print(self.name + ' bought ' + self.drink_choice + ' and ' + self.food_choice + ' for a total price of ' +
-              str(self.amount_spent) + ' at ' + str(self.time))
+              str(self.amount_spent) + ' at ' + pd.to_datetime(str(self.time)).strftime("%d/%m/%Y, %H:%M"))
 
 
 class ReturningCustomer(Customer):  # Define a returning customer
@@ -74,7 +75,13 @@ class ReturningCustomer(Customer):  # Define a returning customer
         self.history.update(history)
 
     def tell_purchase_history(self):
-        print(self.history)  # Show the current history dictionary
+        print(self.history['customer_name'] + ' made the following purchases:')
+        for key, value in self.history.items():
+            if key == 'customer_name':
+                pass
+            else:
+                key = pd.to_datetime(str(key))
+                print(key.strftime("%d/%m/%Y, %H:%M") + ': ' + ' and '.join(value))
 
 
 class Hipster(ReturningCustomer):
@@ -142,24 +149,3 @@ class EmptyInterval(object):
 
     def tell_purchase(self):
         print("Empty Interval")
-
-
-# Now test these classes for a few different actions the customers can do
-time1 = datetime.datetime(2020, 6, 25, 8, 0, 0)
-time2 = datetime.datetime(2020, 10, 10, 14, 32, 0)
-
-# food_probs_1 = food_probs[(food_probs['hour'] == time1.hour) & (
-#     food_probs['minute'] == time1.minute)]['food_prob'].values[0]
-# drink_probs_1 = drink_probs[(drink_probs['hour'] == time1.hour) & (
-#     drink_probs['minute'] == time1.minute)]['drink_prob'].values[0]
-
-# Cust3 = Hipster()  # Create hipster returning customer
-
-# Have them make their first choice
-# Cust3.make_choice(time1, food_probs_1, drink_probs_1)
-# Cust3.make_payment()  # Make the payment based on the choice
-# Cust3.tell_purchase_history()  # Return their history
-
-# Cust3.make_choice(time2)  # They visit again at another time
-# Cust3.make_payment()  # They make the payment for current visit
-# Cust3.tell_purchase_history()  # They have a new updated history
