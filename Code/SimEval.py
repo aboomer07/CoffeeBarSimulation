@@ -28,14 +28,14 @@ def showcase_sim(sim, params, n_examples):
     pp.pprint(params['class_params'])
     print('\n')
     # customers can tell their purchases
-    print('A random selection of 10 exemplary purchases:')
+    print('A random selection of ' + str(n_examples) + ' exemplary purchases:')
     customers = list(sim['customer'])
     selected_customers = random.choices(customers, k=n_examples)
     for customer in selected_customers:
         customer.tell_purchase()
     print('\n')
     # returning customers know their history
-    print('A random selection of 10 exemplary histories of returning customers:')
+    print('A random selection of ' + str(n_examples) + ' exemplary histories of returning customers:')
     returning_customers = list(sim[sim['customer_type'] == 'returning']['customer'])
     selected_customers = random.choices(returning_customers, k=n_examples)
     for customer in selected_customers:
@@ -45,9 +45,11 @@ def showcase_sim(sim, params, n_examples):
 
 def plot_sim(sim, ind):
     # TODO: more/different plots? what is meant by average income per day?
+    # TODO: enhance plot for percentage of one-time vs returning vs empty
     sim['hour'] = sim['time'].dt.hour  # Get hour Integer
     sim['minute'] = sim['time'].dt.minute  # Get minute Integer
     sim['date'] = sim['time'].dt.date
+    sim['month'] = sim['time'].dt.month
     sim['year'] = sim['time'].dt.year  # Get year Integer
 
     # replicate plots from exploratory analysis
@@ -111,4 +113,14 @@ def plot_sim(sim, ind):
     plt.savefig(os.path.abspath('..') + '/Output/daily_rev_' + ind + '.png')
     plt.close()
 
-
+    # customer composition per day
+    fig, ax = plt.subplots(nrows=1, ncols=1)
+    cust_struct = sim.groupby(['date', 'customer_type']).size().reset_index(name='counts')
+    cust_struct['total'] = cust_struct['counts'].groupby(cust_struct['date']).transform('sum')
+    cust_struct['perc'] = cust_struct['counts']/cust_struct['total']
+    sns.lineplot(x='date', y='perc', hue = 'customer_type', data=cust_struct)
+    ax.set_title("Monthly Customer Composition")
+    ax.set_xlabel("Time")  # Set x-axis title
+    ax.set_ylabel("")  # Set y-axis title
+    plt.savefig(os.path.abspath('..') + '/Output/cust_comp_' + ind + '.png')
+    plt.close()
