@@ -15,8 +15,14 @@ import re
 import os
 import sys
 
-data_path = os.path.abspath('..') + \
-    "/Data/Coffeebar_2016-2020.csv"
+# Force the correct directory
+if os.getcwd().split("/")[-1] == "Code":
+    os.chdir("..")
+
+curr_dir = os.getcwd()
+output_dir = curr_dir + "/Output"
+
+data_path = curr_dir + "/Data/Coffeebar_2016-2020.csv"
 
 df = pd.read_csv(data_path, sep=";")
 ################################################################################
@@ -74,7 +80,8 @@ axes[0].set_title("Count of Food Purchases in 5-Year Period")
 # Plot 2: Total Amount of Sold Drinks
 drink_count = sns.countplot(x='drinks', data=df, ax=axes[1])
 axes[1].set_title("Count of Drinks Purchases in 5-Year Period")
-plt.show()
+plt.savefig(output_dir + "/ExploratoryCountPlot.png")
+plt.close()
 ################################################################################
 
 ################################################################################
@@ -97,7 +104,8 @@ ax.xaxis.set_major_locator(plt.MaxNLocator(14))
 ax.set_title("Proportion of Food Items Purchased Throughout a Day")
 ax.set_xlabel("Time of Day")  # Set x-axis title
 ax.set_ylabel("Percentage of Food Purchases")  # Set y-axis title
-plt.show()
+plt.savefig(output_dir + "/ExploratoryFoodProb.png")
+plt.close()
 
 # Get the time variable for to be used in the graph
 drink_probs['time'] = drink_probs['hour'].apply(str) + ':' + \
@@ -118,7 +126,8 @@ ax.xaxis.set_major_locator(plt.MaxNLocator(14))
 ax.set_title("Proportion of Drinks Purchased Throughout a Day")
 ax.set_xlabel("Time of Day")  # Set x-axis title
 ax.set_ylabel("Percentage of Drink Purchases")  # Set y-axis title
-plt.show()
+plt.savefig(output_dir + "/ExploratoryDrinkProb.png")
+plt.close()
 ################################################################################
 
 ################################################################################
@@ -156,7 +165,8 @@ plt.legend(loc="upper left")
 ax.set_title("Inequality Distribution of Total Spending by Customer")
 ax.set_xlabel("Percentile of Customer Index")  # Set x-axis title
 ax.set_ylabel("Percentile of Total Revenue")  # Set y-axis title
-plt.show()
+plt.savefig(output_dir + "/ExploratoryRevenueGini.png")
+plt.close()
 ################################################################################
 
 ################################################################################
@@ -183,7 +193,8 @@ plt.plot(sorted(time_frame.groupby('customer')['time_diff'].mean().values))
 ax.set_title("Mean Time Between Visits for Returning Customers")
 ax.set_xlabel("Ordered Index of Returning Customers")  # Set x-axis title
 ax.set_ylabel("Mean Time Between Visits (Days)")  # Set y-axis title
-plt.show()
+plt.savefig(output_dir + "/ExploratoryMeanTime.png")
+plt.close()
 ################################################################################
 
 ################################################################################
@@ -205,5 +216,6 @@ sns.barplot(data=onetime, x='month', y='onetime',
             hue='year', ax=ax)
 # Set title and show the plot
 ax.set_title("Proportion of One Time Customers Per Month and Year")
-plt.show()
+plt.savefig(output_dir + "/ExploratoryOneTimePct.png")
+plt.close()
 ################################################################################
