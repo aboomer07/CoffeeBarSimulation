@@ -1,4 +1,3 @@
-from Code.SimParams import Sim1, Sim2, Sim3, Sim4, Sim5
 from Code.Customers import *
 from Code.Customer_Probabilities import *
 
@@ -52,7 +51,7 @@ def run_simulation(data, params):
     food_array = np.array(data['foods'])
     timespan = np.array(data['time'])
 
-    for i in range(sims):  # restrict simulation period for now
+    for i in range(sims):
 
         menu = data_params['menus'][i]
         t = timespan[i]

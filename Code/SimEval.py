@@ -5,19 +5,21 @@
 
 # Goal: We want functions to evaluate every simulation. Approach is twofold:
 # 1. Showcase functionality
-# 2. Produce sets of plot/analysis (output to git?)
+# 2. Export simulated data
+# 3. Produce sets of plot/analysis
 
 import random
 import pprint as pp
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import sys
 
 
-
-def showcase_sim(sim, params, n_examples):
-    # TODO: account for empty cases in showcase_sim
-    # TODO: polish formatting
+def showcase_sim(sim, params, n_examples, to_text=False):
+    # TODO: change to single string
+    if to_text:
+        sys.stdout = open(os.path.abspath('..') + '/Output/testtext.txt', 'w')
     print('This showcases the results and functionality of simulated customer in the  following simulation:')
     print('Simulated period: ' + min(sim['time']).strftime("%d/%m/%Y, %H:%M") + ' to ' + max(sim['time']).strftime(
         "%d/%m/%Y, %H:%M") + ', n = ' + str(len(sim)))
@@ -40,8 +42,15 @@ def showcase_sim(sim, params, n_examples):
     selected_customers = random.choices(returning_customers, k=n_examples)
     for customer in selected_customers:
         customer.tell_purchase_history()
+        print('\n')
+    print('\n')
+    sys.stdout.close()
 
-# def statistics_sim(sim):
+
+def store_sim(sim, ind):
+    df = sim.drop(['customer'], axis=1)
+    df.to_csv(os.path.abspath('..') + '/Output/simulated_data_' + ind + '.csv', sep=';', index=False)
+
 
 def plot_sim(sim, ind):
     # TODO: more/different plots? what is meant by average income per day?
@@ -117,8 +126,8 @@ def plot_sim(sim, ind):
     fig, ax = plt.subplots(nrows=1, ncols=1)
     cust_struct = sim.groupby(['date', 'customer_type']).size().reset_index(name='counts')
     cust_struct['total'] = cust_struct['counts'].groupby(cust_struct['date']).transform('sum')
-    cust_struct['perc'] = cust_struct['counts']/cust_struct['total']
-    sns.lineplot(x='date', y='perc', hue = 'customer_type', data=cust_struct)
+    cust_struct['perc'] = cust_struct['counts'] / cust_struct['total']
+    sns.lineplot(x='date', y='perc', hue='customer_type', data=cust_struct)
     ax.set_title("Monthly Customer Composition")
     ax.set_xlabel("Time")  # Set x-axis title
     ax.set_ylabel("")  # Set y-axis title

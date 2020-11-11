@@ -1,8 +1,9 @@
 from Code.SimFunc import *
 from Code.SimEval import *
+from Code.SimParams import *
 
 # set up simulation data frame
-sim_df = df[['time', 'year', 'hour', 'minute']][:30000]
+sim_df = df[['time', 'year', 'hour', 'minute']][0:30000]
 
 a = datetime.datetime.now()
 sim1_df = run_simulation(sim_df, Sim1)

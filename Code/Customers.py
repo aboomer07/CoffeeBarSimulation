@@ -6,7 +6,6 @@
 
 
 # import probabilities and lists of things offered at the coffee shop
-from Code.Customer_Probabilities import food_probs, drink_probs, food_list, drink_list
 
 # Import libraries
 import uuid
@@ -47,7 +46,7 @@ class Customer(object):
     def make_payment(self, menu):
         # Make the payment based on the price in the menu and the choices
         self.amount_spent = menu[self.food_choice] + menu[self.drink_choice]
-        # Reduce the reminining budget accordingly
+        # Reduce the remaining budget accordingly
         self.budget = self.budget - self.amount_spent
 
     def tell_purchase(self):
