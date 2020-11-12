@@ -15,6 +15,12 @@ import seaborn as sns
 import os
 import sys
 
+# Force the correct directory
+if os.getcwd().split("/")[-1] == "Code":
+    os.chdir("..")
+
+curr_dir = os.getcwd()
+output_dir = curr_dir + "/Output"
 
 def showcase_sim(sim, params, n_examples):
     print('This showcases the results and functionality of simulated customer in the  following simulation:')
