@@ -20,7 +20,10 @@ if os.getcwd().split("/")[-1] == "Code":
     os.chdir("..")
 
 curr_dir = os.getcwd()
+if not os.path.dir("Output"):
+    os.mkdir("Output")
 output_dir = curr_dir + "/Output"
+
 
 def showcase_sim(sim, params, n_examples):
     print('This showcases the results and functionality of simulated customer in the  following simulation:')
@@ -41,7 +44,7 @@ def showcase_sim(sim, params, n_examples):
     print('\n')
     # returning customers know their history
     print('A random selection of ' + str(n_examples) +
-            ' exemplary histories of returning customers:')
+          ' exemplary histories of returning customers:')
     returning_customers = list(
         sim[sim['customer_type'] == 'returning']['customer'])
     selected_customers = random.choices(returning_customers, k=n_examples)
