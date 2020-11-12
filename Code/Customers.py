@@ -41,7 +41,7 @@ class Customer(object):
 
     def show_budget(self):
         # Display the customer's current budget
-        print(self.name + '\'s budget is ' + str(self.budget))
+        self.name + '\'s budget is ' + str(self.budget)
 
     def make_payment(self, menu):
         # Make the payment based on the price in the menu and the choices
@@ -51,8 +51,8 @@ class Customer(object):
 
     def tell_purchase(self):
         # Display what the customer purchased and at what time
-        print(self.name + ' bought ' + self.drink_choice + ' and ' + self.food_choice + ' for a total price of ' +
-              str(self.amount_spent) + ' at ' + pd.to_datetime(str(self.time)).strftime("%d/%m/%Y, %H:%M"))
+        print(self.name + ' bought ' + self.drink_choice + ' and ' + self.food_choice + ' for a total price of ' + \
+        str(self.amount_spent) + ' at ' + pd.to_datetime(str(self.time)).strftime("%d/%m/%Y, %H:%M"))
 
 
 class ReturningCustomer(Customer):  # Define a returning customer
@@ -101,7 +101,7 @@ class Hipster(ReturningCustomer):
 
         if self.inv_choice:
             probs = [(1 - x) for x in probs]
-            probs = [x/sum(probs) for x in probs]
+            probs = [x / sum(probs) for x in probs]
 
         self.food_choice = np.random.choice(list(foods.keys()), 1, p=probs)[0]
 
@@ -109,7 +109,7 @@ class Hipster(ReturningCustomer):
 
         if self.inv_choice:
             probs = [(1 - x) for x in probs]
-            probs = [x/sum(probs) for x in probs]
+            probs = [x / sum(probs) for x in probs]
 
         self.drink_choice = np.random.choice(list(drinks.keys()), 1, p=probs)[0]
 
@@ -122,7 +122,7 @@ class TripAdvisorCustomer(Customer):
 
     def make_payment(self, menu):
         self.amount_spent = menu[self.food_choice] + \
-            menu[self.drink_choice] + np.random.randint(1, 10)
+                            menu[self.drink_choice] + np.random.randint(1, 10)
         self.budget = self.budget - self.amount_spent
 
 

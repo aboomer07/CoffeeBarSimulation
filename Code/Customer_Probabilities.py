@@ -12,8 +12,14 @@ import re
 import os
 import sys
 
-data_path = os.path.abspath('..') + \
-    "/Data/Coffeebar_2016-2020.csv"
+# Force the correct directory
+if os.getcwd().split("/")[-1] == "Code":
+    os.chdir("..")
+
+curr_dir = os.getcwd()
+output_dir = curr_dir + "/Output"
+
+data_path = curr_dir + "/Data/Coffeebar_2016-2020.csv"
 
 df = pd.read_csv(data_path, sep=";")
 ################################################################################

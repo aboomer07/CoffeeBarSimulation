@@ -3,7 +3,7 @@
 # Group Partners: Andy Boomer and Jacob Pichelmann
 ################################################################################
 
-# Goal: We want functions to evaluate every simulation. Approach is twofold:
+# Goal: We want functions to evaluate every simulation. Approach is threefold:
 # 1. Showcase functionality
 # 2. Export simulated data
 # 3. Produce sets of plot/analysis
@@ -15,18 +15,8 @@ import seaborn as sns
 import os
 import sys
 
-# Force the correct directory
-if os.getcwd().split("/")[-1] == "Code":
-    os.chdir("..")
 
-curr_dir = os.getcwd()
-output_dir = curr_dir + "/Output"
-
-
-def showcase_sim(sim, params, n_examples, to_text=False):
-    # TODO: change to single string
-    if to_text:
-        sys.stdout = open(output_dir + '/testtext.txt', 'w')
+def showcase_sim(sim, params, n_examples):
     print('This showcases the results and functionality of simulated customer in the  following simulation:')
     print('Simulated period: ' + min(sim['time']).strftime("%d/%m/%Y, %H:%M") + ' to ' + max(sim['time']).strftime(
         "%d/%m/%Y, %H:%M") + ', n = ' + str(len(sim)))
@@ -45,7 +35,7 @@ def showcase_sim(sim, params, n_examples, to_text=False):
     print('\n')
     # returning customers know their history
     print('A random selection of ' + str(n_examples) +
-          ' exemplary histories of returning customers:')
+            ' exemplary histories of returning customers:')
     returning_customers = list(
         sim[sim['customer_type'] == 'returning']['customer'])
     selected_customers = random.choices(returning_customers, k=n_examples)
@@ -53,7 +43,6 @@ def showcase_sim(sim, params, n_examples, to_text=False):
         customer.tell_purchase_history()
         print('\n')
     print('\n')
-    sys.stdout.close()
 
 
 def store_sim(sim, ind):

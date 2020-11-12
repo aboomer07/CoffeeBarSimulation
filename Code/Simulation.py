@@ -1,10 +1,9 @@
-# Force the correct directory
 from Code.SimParams import *
 from Code.SimEval import *
 from Code.SimFunc import *
 
 # set up simulation data frame
-sim_df = df[['time', 'year', 'hour', 'minute']]
+sim_df = df[['time', 'year', 'hour', 'minute']][0:3000]
 
 a = datetime.datetime.now()
 sim1_df = run_simulation(sim_df, Sim1)

@@ -7,7 +7,7 @@ menu_20pct = {key: (1.2 * val) for key, val in menu.items()}
 
 base_prices = np.array([menu for i in range(df.shape[0])])
 prices_2018 = np.where(df['year'].values < 2018, base_prices, np.array(
-    [menu_20pct for i in range(len(base_prices))]))
+    [menu_20pct for j in range(len(base_prices))]))
 
 Sim1 = {
     'data_params': {
