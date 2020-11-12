@@ -19,8 +19,6 @@ Give examples
 ```
 
 ### Code Structure
-<img src="https://bitbucket.org/aboomer07/examtse2020-21/src/8d0946aaf08f/Documentation/FileDiagram.png?at=master">
-
 ![CodeStructure](FileDiagram.png)
 
 ### Installing
