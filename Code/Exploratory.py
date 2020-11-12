@@ -202,6 +202,9 @@ plt.close()
 # Use the time frame specified above to categorize returning customers
 df['onetime'] = np.where(df['customer'].isin(time_frame['customer'].unique()),
                          0, 1)
+df['returning'] = np.where(df['onetime'] == 0, 1, 0)
+df['customer_type'] = np.where(df['onetime'] == 1, 'onetime', 'returning')
+
 # Get the month to be used in the plot
 df['month'] = df['time'].dt.month
 
@@ -218,4 +221,57 @@ sns.barplot(data=onetime, x='month', y='onetime',
 ax.set_title("Proportion of One Time Customers Per Month and Year")
 plt.savefig(output_dir + "/ExploratoryOneTimePct.png")
 plt.close()
+################################################################################
+
+################################################################################
+# Additional exploratory questions from part 4
+# In the provided data set there are actual returning customers. How
+# many? Do they have specific times when they show up more?
+returning_prob = df.groupby(['hour', 'minute'], as_index=False)['returning'].mean()
+
+# Initialize the plot
+fig, ax = plt.subplots(ncols=1, nrows=1)
+
+# Plot probabilities of returning customers over a day
+sns.lineplot(data=returning_prob, x='hour', y='returning', ax=ax)
+ax.set_title("Proportion of Regular Customers during a Day")
+plt.savefig(output_dir + "/ExploratoryReturningDailyPct.png")
+plt.close()
+
+# How does this impact their buying history?
+food_probs_type = df.groupby(['hour', 'minute', 'customer_type'])['food'].value_counts(
+    normalize=True).unstack(fill_value=0).reset_index().rename_axis(None, axis=1)
+# wide to long
+food_probs_type = food_probs_type.melt(id_vars=['hour', 'minute', 'customer_type'],
+                                       value_vars=food_list)
+
+drink_probs_type = df.groupby(['hour', 'minute', 'customer_type'])['drinks'].value_counts(
+    normalize=True).unstack(fill_value=0).reset_index().rename_axis(None, axis=1)
+# wide to long
+drink_probs_type = drink_probs_type.melt(id_vars=['hour', 'minute', 'customer_type'],
+                                       value_vars=drink_list)
+
+# Count Plots by customer type
+fig, axes = plt.subplots(nrows=1, ncols=2)
+
+# Plot 1: Proportion of Sold Foods
+food_prop = sns.barplot(x='variable', y='value',  data=food_probs_type, hue='customer_type', ax=axes[0])
+axes[0].set_title("Food Purchases in 5-Year Period by Customer Type")
+
+# Plot 2: Proportion of Sold Drinks
+drink_prop = sns.barplot(x='variable', y='value',  data=drink_probs_type, hue='customer_type', ax=axes[1])
+axes[1].set_title("Drink Purchases in 5-Year Period by Customer Type")
+plt.savefig(output_dir + "/ExploratoryPurchPropByType.png")
+plt.close()
+
+# Do you see correlations between what returning customers buy and one-timers?
+fig, axes = plt.subplots(nrows=1, ncols=2)
+sns.lineplot(data=food_probs_type, x='hour', y='value', hue='variable', style='customer_type', ax=axes[0])
+axes[0].set_title("Correlation of Food Purchases")
+
+sns.lineplot(data=drink_probs_type, x='hour', y='value', hue='variable', style='customer_type', ax=axes[1])
+axes[1].set_title("Correlation of Drink Purchases")
+plt.savefig(output_dir + "/ExploratoryPurchaseCorr.png")
+plt.close()
+
 ################################################################################
