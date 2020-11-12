@@ -73,7 +73,8 @@ def plot_sim(sim, ind):
 
     # replicate plots from exploratory analysis
     # Initial Count Plots
-    fig, axes = plt.subplots(nrows=1, ncols=2)
+    fig, axes = plt.subplots(nrows=1, ncols=2, sharey=True)
+    fig.set_size_inches(10, 5)
 
     # Plot 1: Total Amount of Sold Foods
     sns.countplot(x='food', data=sim, ax=axes[0])
@@ -145,4 +146,20 @@ def plot_sim(sim, ind):
     ax.set_xlabel("Time")  # Set x-axis title
     ax.set_ylabel("")  # Set y-axis title
     plt.savefig(output_dir + '/cust_comp_' + ind + '.png')
+    plt.close()
+
+    # customer composition per day stacked
+    fig, ax = plt.subplots(nrows=1, ncols=1)
+    cust_list = ['one_time', 'returning',
+                 'hipster', 'trip_advisor']
+    cust_struct = sim.groupby('date')['customer_type'].value_counts(
+        normalize=True).unstack(fill_value=0).reset_index().rename_axis(None, axis=1)
+    plt.stackplot(cust_struct['date'], *[cust_struct[col]
+                                         for col in cust_list], labels=list(cust_list))
+    ax.set_title("Monthly Customer Composition")
+    ax.set_xlabel("Time")  # Set x-axis title
+    ax.set_ylabel("")  # Set y-axis title
+    plt.legend(loc='lower right')
+    ax.xaxis.set_major_locator(plt.MaxNLocator(6))
+    plt.savefig(output_dir + '/cust_comp_stack_' + ind + '.png')
     plt.close()
