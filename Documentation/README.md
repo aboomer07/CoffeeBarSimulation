@@ -1,17 +1,25 @@
-# Project Title
+# Hipster Coffee Nerds simulating Hipster Coffee Normies
 
 One Paragraph of project description goes here
 
 ## Getting Started
 
-You can already read the READ ME, so well done, the hardest part is behind you! 
+You can already read the READ ME, so well done, the hardest part is behind you! In case you have not yet cloned the code, navigate to
+https://bitbucket.org/aboomer07/examtse2020-21/src/master/ and clone the repository to your local machine.
 
 ### Prerequisites
 
 Python 3.8 up and running, preferably via anaconda. 
+Non-standard libraries might have to be installed prior to executing the program: 
+uuid
+names 
+
 ```
 Give examples
 ```
+
+### Code Structure
+<img src="file_url">
 
 ### Installing
 
