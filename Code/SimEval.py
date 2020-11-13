@@ -18,42 +18,51 @@ import sys
 # Force the correct directory
 if os.getcwd().split("/")[-1] == "Code":
     os.chdir("..")
-
 curr_dir = os.getcwd()
+
+# If an output directory does not already exist, create one
 if not os.path.dir("Output"):
     os.mkdir("Output")
 output_dir = curr_dir + "/Output"
 
 
+# Create a function to print some of the text related output from simulation
 def showcase_sim(sim, params, n_examples):
     print('This showcases the results and functionality of simulated customer in the  following simulation:')
     print('Simulated period: ' + min(sim['time']).strftime("%d/%m/%Y, %H:%M") + ' to ' + max(sim['time']).strftime(
         "%d/%m/%Y, %H:%M") + ', n = ' + str(len(sim)))
+
+    # Print the parameters passed to the simulation
     print('Data Parameters:')
     pp.pprint(params['data_params'])
     print('\n')
     print('Class Parameters:')
     pp.pprint(params['class_params'])
     print('\n')
+
     # customers can tell their purchases
     print('A random selection of ' + str(n_examples) + ' exemplary purchases:')
     customers = list(sim['customer'])
     selected_customers = random.choices(customers, k=n_examples)
     for customer in selected_customers:
-        customer.tell_purchase()
+        customer.tell_purchase()  # Get some purchases from random customers
     print('\n')
+
     # returning customers know their history
     print('A random selection of ' + str(n_examples) +
           ' exemplary histories of returning customers:')
-    returning_customers = list(
+    returning_customers = list(  # Choose the returning customers
         sim[sim['customer_type'] == 'returning']['customer'])
     selected_customers = random.choices(returning_customers, k=n_examples)
+
+    # Get back the purchase histories of the selection returining customers
     for customer in selected_customers:
         customer.tell_purchase_history()
         print('\n')
     print('\n')
 
 
+# Define function to store the simulation dataframe in a csv file
 def store_sim(sim, ind):
     df = sim.drop(['customer'], axis=1)
     df.to_csv(output_dir + '/simulated_data_' +
@@ -150,10 +159,14 @@ def plot_sim(sim, ind):
     fig, ax = plt.subplots(nrows=1, ncols=1)
     cust_list = ['one_time', 'returning',
                  'hipster', 'trip_advisor']
-    cust_struct = sim.groupby('date')['customer_type'].value_counts(
-        normalize=True).unstack(fill_value=0).reset_index().rename_axis(None, axis=1)
-    plt.stackplot(cust_struct['date'], *[cust_struct[col]
-                                         for col in cust_list], labels=list(cust_list))
+    cust_struct = sim.groupby('date')['customer_type']\
+        .value_counts(normalize=True).unstack(fill_value=0)\
+        .reset_index().rename_axis(None, axis=1)
+
+    plt.stackplot(cust_struct['date'],
+                  *[cust_struct[col] for col in cust_list],
+                  labels=list(cust_list))
+
     ax.set_title("Monthly Customer Composition")
     ax.set_xlabel("Time")  # Set x-axis title
     ax.set_ylabel("")  # Set y-axis title
