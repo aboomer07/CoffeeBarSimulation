@@ -257,7 +257,7 @@ plt.close()
 ################################################################################
 # Revenue plots
 # Answers to:
-# Further analysis of calculated purchase probabilities during the day (data understanding). (Part 1)
+# Further analysis of revenue structure (data understanding). (Part 1)
 
 # Set up single figure grid
 fig, ax = plt.subplots(nrows=1, ncols=1)
@@ -280,7 +280,7 @@ plt.close()
 ################################################################################
 # Customer composition plots
 # Answers to:
-# Further analysis of calculated purchase probabilities during the day (data understanding). (Part 1)
+# Further analysis of customer structure (data understanding). (Part 1)
 # Do returning customers have specific times when they show up more? (Part 4)
 
 # Initialize first figure
