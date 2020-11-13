@@ -51,8 +51,8 @@ class Customer(object):
 
     def tell_purchase(self):
         # Display what the customer purchased and at what time
-        print(self.name + ' bought ' + self.drink_choice + ' and ' + self.food_choice + ' for a total price of ' + \
-        str(self.amount_spent) + ' at ' + pd.to_datetime(str(self.time)).strftime("%d/%m/%Y, %H:%M"))
+        print(self.name + ' bought ' + self.drink_choice + ' and ' + self.food_choice + ' for a total price of ' +
+              str(self.amount_spent) + ' at ' + pd.to_datetime(str(self.time)).strftime("%d/%m/%Y, %H:%M"))
 
 
 class ReturningCustomer(Customer):  # Define a returning customer
@@ -80,7 +80,8 @@ class ReturningCustomer(Customer):  # Define a returning customer
                 pass
             else:
                 key = pd.to_datetime(str(key))
-                print(key.strftime("%d/%m/%Y, %H:%M") + ': ' + ' and '.join(value))
+                print(key.strftime("%d/%m/%Y, %H:%M") +
+                      ': ' + ' and '.join(value))
 
 
 class Hipster(ReturningCustomer):
@@ -122,11 +123,14 @@ class TripAdvisorCustomer(Customer):
 
     def make_payment(self, menu):
         self.amount_spent = menu[self.food_choice] + \
-                            menu[self.drink_choice] + np.random.randint(1, 10)
+            menu[self.drink_choice] + np.random.randint(1, 10)
         self.budget = self.budget - self.amount_spent
 
 
+# Add an extra class to put null in each of the attributes
+# Also needs to have the same methods so that the customer creation is seamless
 class EmptyInterval(object):
+    # The value of all the attributes is set in the sim_params dict
     def __init__(self, params):
         self.customer_type = 'empty_interval'
         self.customer_id = params[self.customer_type]
@@ -137,6 +141,7 @@ class EmptyInterval(object):
         self.amount_spent = params[self.customer_type]
         self.time = params[self.customer_type]
 
+    # Empty Interval class has all the same methods, but nothing happens
     def make_choice(self, time, foods, drinks):
         pass
 
