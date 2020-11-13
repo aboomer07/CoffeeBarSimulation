@@ -1,10 +1,13 @@
+# Import all the functions and objects from other project files
 from Code.SimParams import *
 from Code.SimEval import *
 from Code.SimFunc import *
 
 # set up simulation data frame
+# The dataframe can be subsetted to a smaller sample for a faster test sim
 sim_df = df[['time', 'year', 'hour', 'minute']]
 
+# For each simulation in 1-5, print out the time it takes and get the df
 a = datetime.datetime.now()
 sim1_df = run_simulation(sim_df, Sim1)
 print((datetime.datetime.now() - a).seconds)
@@ -25,17 +28,21 @@ a = datetime.datetime.now()
 sim5_df = run_simulation(sim_df, Sim5)
 print((datetime.datetime.now() - a).seconds)
 
-# showcase_sim(sim1_df, Sim1, 2)
+
+# For each sim in 1-5, call the two evaluation functions
+# Showcase sim gets the printed summary
+# Plot sim creates the set of analysis plots
+showcase_sim(sim1_df, Sim1, 2)
 plot_sim(sim1_df, 'sim_1')
 
-# showcase_sim(sim2_df, Sim2, 2)
+showcase_sim(sim2_df, Sim2, 2)
 plot_sim(sim2_df, 'sim_2')
 
-# showcase_sim(sim3_df, Sim3, 2)
+showcase_sim(sim3_df, Sim3, 2)
 plot_sim(sim3_df, 'sim_3')
 
-# showcase_sim(sim4_df, Sim4, 2)
+showcase_sim(sim4_df, Sim4, 2)
 plot_sim(sim4_df, 'sim_4')
 
-# showcase_sim(sim5_df, Sim5, 2)
+showcase_sim(sim5_df, Sim5, 2)
 plot_sim(sim5_df, 'sim_5')
