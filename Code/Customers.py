@@ -12,7 +12,6 @@ import uuid
 import names  # just for fun, can be installed with sudo pip
 import numpy as np
 import pandas as pd
-import datetime  # For getting hour and minute from datetime objects
 
 
 class Customer(object):

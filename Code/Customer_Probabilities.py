@@ -8,9 +8,7 @@
 # Importing Libraries and Datafile
 import numpy as np
 import pandas as pd
-import re
 import os
-import sys
 
 # Force the correct directory
 if os.getcwd().split("/")[-1] == "Code":
@@ -58,9 +56,4 @@ prob_df = prob_df.merge(df.groupby(['hour', 'minute'])['drinks']
                         .value_counts(normalize=True).unstack(fill_value=0)
                         .reset_index().rename_axis(None, axis=1),
                         on=['hour', 'minute'])
-
-# Get a time column in the probs data frame
-prob_df['time'] = prob_df['hour'].apply(str) + ':' + \
-    np.where(prob_df['minute'] < 10, "0" + prob_df['minute'].apply(str),
-             prob_df['minute'].apply(str))
 ################################################################################

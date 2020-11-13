@@ -2,7 +2,7 @@
 from Code.Customers import *
 from Code.Customer_Probabilities import *
 
-# Import the python libraries needed in the simualtion
+# Import the python libraries needed in the simulation
 import random
 import pandas as pd
 import numpy as np
@@ -16,7 +16,7 @@ def run_simulation(data, params):
 
     sims = data.shape[0]  # Get the size of the current simulation
 
-    # Get the paramters for the objects and for the menu price array
+    # Get the parameters for the objects and for the menu price array
     data_params = params['data_params'].copy()
     class_params = params['class_params'].copy()
 
@@ -35,7 +35,7 @@ def run_simulation(data, params):
     budget = np.empty(sims, dtype=np.float64)
 
     # Get the food and drink probabilities and put them into dictionaries
-    data = pd.merge(data, probs_df, how='left', on=['hour', 'minute'])
+    data = pd.merge(data, prob_df, how='left', on=['hour', 'minute'])
     data['foods'] = data[food_list].to_dict(orient='records')
     data['drinks'] = data[drink_list].to_dict(orient='records')
 

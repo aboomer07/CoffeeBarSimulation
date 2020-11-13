@@ -3,9 +3,15 @@ from Code.SimParams import *
 from Code.SimEval import *
 from Code.SimFunc import *
 
+import datetime
+
 # set up simulation data frame
-# The dataframe can be subsetted to a smaller sample for a faster test sim
-sim_df = df[['time', 'year', 'hour', 'minute']]
+# The data frame can be subsetted to a smaller sample for a faster test sim
+sim_df = df['time'] + pd.DateOffset(years=5)
+sim_df = sim_df.to_frame()
+sim_df['year'] = sim_df['time'].dt.year
+sim_df['hour'] = sim_df['time'].dt.hour
+sim_df['minute'] = sim_df['time'].dt.minute
 
 # For each simulation in 1-5, print out the time it takes and get the df
 a = datetime.datetime.now()

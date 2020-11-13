@@ -13,7 +13,6 @@ import pprint as pp
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-import sys
 
 # Force the correct directory
 if os.getcwd().split("/")[-1] == "Code":
@@ -21,7 +20,7 @@ if os.getcwd().split("/")[-1] == "Code":
 curr_dir = os.getcwd()
 
 # If an output directory does not already exist, create one
-if not os.path.dir("Output"):
+if not os.path.isdir("Output"):
     os.mkdir("Output")
 output_dir = curr_dir + "/Output"
 
@@ -80,7 +79,7 @@ def plot_sim(sim, ind):
 
     # replicate plots from exploratory analysis
     # Initial Count Plots
-    fig, axes = plt.subplots(nrows=1, ncols=2, sharey=True)
+    fig, axes = plt.subplots(nrows=1, ncols=2, sharey='row')
     fig.set_size_inches(10, 5)
 
     # Plot 1: Total Amount of Sold Foods
@@ -139,20 +138,6 @@ def plot_sim(sim, ind):
     ax.set_xlabel("Time")  # Set x-axis title
     ax.set_ylabel("Total daily revenue in $")  # Set y-axis title
     plt.savefig(output_dir + '/daily_rev_' + ind + '.png')
-    plt.close()
-
-    # customer composition per day
-    fig, ax = plt.subplots(nrows=1, ncols=1)
-    cust_struct = sim.groupby(['date', 'customer_type']
-                              ).size().reset_index(name='counts')
-    cust_struct['total'] = cust_struct['counts'].groupby(
-        cust_struct['date']).transform('sum')
-    cust_struct['perc'] = cust_struct['counts'] / cust_struct['total']
-    sns.lineplot(x='date', y='perc', hue='customer_type', data=cust_struct)
-    ax.set_title("Monthly Customer Composition")
-    ax.set_xlabel("Time")  # Set x-axis title
-    ax.set_ylabel("")  # Set y-axis title
-    plt.savefig(output_dir + '/cust_comp_' + ind + '.png')
     plt.close()
 
     # customer composition per day stacked
