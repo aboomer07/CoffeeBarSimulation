@@ -47,17 +47,20 @@ food_list = np.sort((np.array(df['food'].unique())))
 ################################################################################
 
 ################################################################################
-# Calculating Probabilities For food and drinks per 5-minute Interval
-# Use Value Counts to Calculate
-food_probs = df.groupby(['hour', 'minute'])['food']. \
-    value_counts(normalize=True). \
-    unstack(fill_value=0). \
-    reset_index(). \
-    rename_axis(None, axis=1)
+# Calculating Probabilities For Food and Drinks per 5-minute Interval
+# Use Value Counts Function to Calculate the Probabilities for Each Food Item
+#   And Each Drink. Unstack to Create Columns Per Item/Drink
+prob_df = df.groupby(['hour', 'minute'])['food']\
+    .value_counts(normalize=True).unstack(fill_value=0)\
+    .reset_index().rename_axis(None, axis=1)
 
-drink_probs = df.groupby(['hour', 'minute'])['drinks']. \
-    value_counts(normalize=True). \
-    unstack(fill_value=0). \
-    reset_index(). \
-    rename_axis(None, axis=1)
+prob_df = prob_df.merge(df.groupby(['hour', 'minute'])['drinks']
+                        .value_counts(normalize=True).unstack(fill_value=0)
+                        .reset_index().rename_axis(None, axis=1),
+                        on=['hour', 'minute'])
+
+# Get a time column in the probs data frame
+prob_df['time'] = prob_df['hour'].apply(str) + ':' + \
+    np.where(prob_df['minute'] < 10, "0" + prob_df['minute'].apply(str),
+             prob_df['minute'].apply(str))
 ################################################################################
