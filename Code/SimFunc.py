@@ -1,6 +1,6 @@
 # Import the needed objects and functions from other files
 from Code.Customers import *
-from Code.Customer_Probabilities import *
+from Code.CustomerProbabilities import *
 
 # Import the python libraries needed in the simulation
 import random

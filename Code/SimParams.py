@@ -1,6 +1,6 @@
 # Import the necessary python libraries dataframe
 import numpy as np
-from Code.Customer_Probabilities import df
+from Code.CustomerProbabilities import df
 
 # Initialize the basic menu defined in the project scope
 menu = {'sandwich': 2, 'cookie': 2, 'pie': 3, 'muffin': 3, 'milkshake': 5,

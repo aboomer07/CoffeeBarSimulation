@@ -15,7 +15,6 @@ import seaborn as sns
 import os
 import inspect
 import objgraph
-from Code.SimParams import *
 from Code.Customers import *
 
 # Force the correct directory
