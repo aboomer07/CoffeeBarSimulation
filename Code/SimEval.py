@@ -13,6 +13,10 @@ import pprint as pp
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import inspect
+import objgraph
+from Code.SimParams import *
+from Code.Customers import *
 
 # Force the correct directory
 if os.getcwd().split("/")[-1] == "Code":
@@ -159,3 +163,11 @@ def plot_sim(sim, ind):
     ax.xaxis.set_major_locator(plt.MaxNLocator(6))
     plt.savefig(output_dir + '/cust_comp_stack_' + ind + '.png')
     plt.close()
+
+    # Create the object graphs from objgraph library
+    if ind == "sim_1":
+        objgraph.show_refs(Customer, filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2,
+                           filename=output_dir + "/" + ind + '_CustomerMethods.png')
+
+        objgraph.show_refs(Customer(Sim1['class_params']),
+                           filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2, filename=output_dir + "/" ind + '_CustomerAttributes.png')
