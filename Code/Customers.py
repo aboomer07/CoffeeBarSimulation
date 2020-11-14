@@ -61,13 +61,11 @@ class ReturningCustomer(Customer):  # Define a returning customer
         # they have a higher budget
         self.budget = params[self.customer_type]['budget']
         self.history = {}  # They also can remember their purchase history
-        self.visit = 0  # Keep track of their current visit number
 
     def make_payment(self, menu):
         # Their make payment function is slightly different with the history
         self.amount_spent = menu[self.food_choice] + menu[self.drink_choice]
         self.budget = self.budget - self.amount_spent
-        self.visit += 1  # Increase the visit variable by 1
         history = {'customer_name': self.name, self.time: [
             self.drink_choice, self.food_choice]}
         self.history.update(history)

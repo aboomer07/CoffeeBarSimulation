@@ -11,7 +11,6 @@ import math
 
 # Define a function to take in data and simulation parameters
 def run_simulation(data, params):
-
     data = data.copy(deep=True)  # Make sure data doesn't get overwritten
 
     sims = data.shape[0]  # Get the size of the current simulation
@@ -69,7 +68,9 @@ def run_simulation(data, params):
             if pool_size[i] > 0:
                 customer = random.choice(ReturningCustomersPool)
                 # Check whether the chosen returning has enough budget
-                while customer.budget < menu['milkshake'] + menu['pie']:
+                while customer.budget < max(
+                        {key: val for key, val in menu.items() if (key in drink_list)}.values()) + max(
+                        {key: val for key, val in menu.items() if (key in food_list)}.values()):
                     ReturningCustomersPool.pop(ReturningCustomersPool.index(
                         customer))  # customer gets removed
 

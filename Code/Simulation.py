@@ -7,7 +7,7 @@ import datetime
 
 # set up simulation data frame
 # The data frame can be subsetted to a smaller sample for a faster test sim
-sim_df = df['time'] + pd.DateOffset(years=5)
+sim_df = df['time'] + pd.DateOffset(years=5)  # shift by five years to make more realistic
 sim_df = sim_df.to_frame()
 sim_df['year'] = sim_df['time'].dt.year
 sim_df['hour'] = sim_df['time'].dt.hour
@@ -34,7 +34,6 @@ a = datetime.datetime.now()
 sim5_df = run_simulation(sim_df, Sim5)
 print((datetime.datetime.now() - a).seconds)
 
-
 # For each sim in 1-5, call the two evaluation functions
 # Showcase sim gets the printed summary
 # Plot sim creates the set of analysis plots
@@ -52,3 +51,5 @@ plot_sim(sim4_df, 'sim_4')
 
 showcase_sim(sim5_df, Sim5, 2)
 plot_sim(sim5_df, 'sim_5')
+
+meta_sim(Sim1, 'sim_1')

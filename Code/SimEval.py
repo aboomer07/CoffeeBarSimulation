@@ -73,8 +73,6 @@ def store_sim(sim, ind):
 
 
 def plot_sim(sim, ind):
-    # TODO: more/different plots? what is meant by average income per day?
-    # TODO: enhance plot for percentage of one-time vs returning vs empty
     sim['hour'] = sim['time'].dt.hour  # Get hour Integer
     sim['minute'] = sim['time'].dt.minute  # Get minute Integer
     sim['date'] = sim['time'].dt.date
@@ -107,7 +105,7 @@ def plot_sim(sim, ind):
     # Get the percentage of the max for the index and for the revenue
     cum_rev['index'] = cum_rev['index'] / cum_rev['index'].tail(1).values[0]
     cum_rev['payments'] = cum_rev['payments'] / \
-        cum_rev['payments'].tail(1).values[0]
+                          cum_rev['payments'].tail(1).values[0]
 
     # Initialize the figure
     fig, ax = plt.subplots(nrows=1, ncols=1)
@@ -148,8 +146,8 @@ def plot_sim(sim, ind):
     fig, ax = plt.subplots(nrows=1, ncols=1)
     cust_list = ['one_time', 'returning',
                  'hipster', 'trip_advisor']
-    cust_struct = sim.groupby('date')['customer_type']\
-        .value_counts(normalize=True).unstack(fill_value=0)\
+    cust_struct = sim.groupby('date')['customer_type'] \
+        .value_counts(normalize=True).unstack(fill_value=0) \
         .reset_index().rename_axis(None, axis=1)
 
     plt.stackplot(cust_struct['date'],
@@ -164,10 +162,13 @@ def plot_sim(sim, ind):
     plt.savefig(output_dir + '/cust_comp_stack_' + ind + '.png')
     plt.close()
 
-    # Create the object graphs from objgraph library
-    if ind == "sim_1":
-        objgraph.show_refs(Customer, filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2,
-                           filename=output_dir + "/" + ind + '_CustomerMethods.png')
 
-        objgraph.show_refs(Customer(Sim1['class_params']),
-                           filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2, filename=output_dir + "/" ind + '_CustomerAttributes.png')
+def meta_sim(params, ind):
+    # visualize object hierarchy for simulation case
+    objgraph.show_refs(Customer, filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)],
+                       max_depth=2,
+                       filename=output_dir + "/" + ind + '_CustomerMethods.png')
+
+    objgraph.show_refs(Customer(params['class_params']),
+                       filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2,
+                       filename=output_dir + "/" + ind + '_CustomerAttributes.png')

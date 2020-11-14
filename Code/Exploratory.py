@@ -314,7 +314,7 @@ fig, ax = plt.subplots(ncols=1, nrows=1)
 
 # Plot probabilities of returning customers over a day
 sns.lineplot(data=returning_prob, x='hour', y='returning', ax=ax)
-ax.set_title("Proportion of Regular Customers during a Day")
+ax.set_title("Proportion of Returning Customers during a Day")
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
 plt.savefig(output_dir + "/ExploratoryReturningDailyPct.png")
 plt.close()
