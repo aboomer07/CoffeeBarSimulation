@@ -1,3 +1,9 @@
+################################################################################
+# Part 3 of Python Final Project: Simulation of Coffee Drinkers
+# Group Partners: Andy Boomer and Jacob Pichelmann
+# This script sets up the simulation function
+################################################################################
+
 # Import the needed objects and functions from other files
 from Code.Customers import *
 from Code.CustomerProbabilities import *

@@ -1,6 +1,15 @@
-# Import the necessary python libraries dataframe
-import numpy as np
+################################################################################
+# Part 3/4 of Python Final Project: Simulation of Coffee Drinkers
+# Group Partners: Andy Boomer and Jacob Pichelmann
+# This script sets up the parameters used in 5 simulation variants
+################################################################################
+
+# import necessary data from other project files
 from Code.CustomerProbabilities import df
+
+# import libraries dataframe
+import numpy as np
+
 
 # Initialize the basic menu defined in the project scope
 menu = {'sandwich': 2, 'cookie': 2, 'pie': 3, 'muffin': 3, 'milkshake': 5,

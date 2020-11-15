@@ -1,7 +1,8 @@
 ################################################################################
 # Part 1 of Python Final Project: Simulation of Coffee Drinkers
 # Group Partners: Andy Boomer and Jacob Pichelmann
-# Part 1 involves exploring sample coffee dataset, creating probabilities
+# Part 1 involves exploring sample coffee dataset, returns console prints and
+# a set of plots with the prefix 'Exploratory'
 ################################################################################
 
 ################################################################################

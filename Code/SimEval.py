@@ -1,21 +1,24 @@
 ################################################################################
-# Part ? of Python Final Project: Simulation of Coffee Shop
+# Part 3/4 of Python Final Project: Simulation of Coffee Shop
 # Group Partners: Andy Boomer and Jacob Pichelmann
-################################################################################
-
-# Goal: We want functions to evaluate every simulation. Approach is threefold:
+# This script introduces functionality to evaluate simulation output.
+# Approach is threefold:
 # 1. Showcase functionality
 # 2. Export simulated data
-# 3. Produce sets of plot/analysis
+# 3. Produce sets of 5 plots/analysis
+################################################################################
 
+# import libraries
 import random
 import pprint as pp
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-import inspect
-import objgraph
-from Code.Customers import *
+
+# Uncomment if you want to conduct meta analysis on classes
+# import inspect
+# import objgraph
+# from Code.Customers import *
 
 # Force the correct directory
 if os.getcwd().split("/")[-1] == "Code":
@@ -47,17 +50,17 @@ def showcase_sim(sim, params, n_examples):
     customers = list(sim['customer'])
     selected_customers = random.choices(customers, k=n_examples)
     for customer in selected_customers:
-        customer.tell_purchase()  # Get some purchases from random customers
+        customer.tell_purchase()  # Let selected customer tell their last purchase
     print('\n')
 
     # returning customers know their history
     print('A random selection of ' + str(n_examples) +
           ' exemplary histories of returning customers:')
-    returning_customers = list(  # Choose the returning customers
+    returning_customers = list(  # Choose from returning customers
         sim[sim['customer_type'] == 'returning']['customer'])
     selected_customers = random.choices(returning_customers, k=n_examples)
 
-    # Get back the purchase histories of the selection returining customers
+    # Let selected customers tell their purchase history
     for customer in selected_customers:
         customer.tell_purchase_history()
         print('\n')
@@ -83,17 +86,18 @@ def plot_sim(sim, ind):
     fig, axes = plt.subplots(nrows=1, ncols=2, sharey='row')
     fig.set_size_inches(10, 5)
 
-    # Plot 1: Total Amount of Sold Foods
+    # Plot 1a: Total Amount of Sold Foods
     sns.countplot(x='food', data=sim, ax=axes[0])
     axes[0].set_title("Count of Food Purchases in 5-Year Simulation")
 
-    # Plot 2: Total Amount of Sold Drinks
+    # Plot 1b: Total Amount of Sold Drinks
     sns.countplot(x='drinks', data=sim, ax=axes[1])
     axes[1].set_title("Count of Drinks Purchases in 5-Year Simulation")
     fig.tight_layout()
     plt.savefig(output_dir + '/countplot_' + ind + '.png')
     plt.close()
 
+    # Plot 2: cumulative income by customer (similar to gini inequality curve)
     # Get the total amount spent over the five years per unique customer
     rev_frame = sim.groupby('customer_type', as_index=False)['payments'].sum()
 
@@ -108,7 +112,6 @@ def plot_sim(sim, ind):
 
     # Initialize the figure
     fig, ax = plt.subplots(nrows=1, ncols=1)
-    # Plot the curve (similar to gini inequality curve)
     plt.plot(cum_rev['index'], cum_rev['payments'],
              label="Cumulative Revenue Sum")
     # Plot a 45 degree line for reference, then show the plot
@@ -120,7 +123,7 @@ def plot_sim(sim, ind):
     plt.savefig(output_dir + '/cum_rev_' + ind + '.png')
     plt.close()
 
-    # show development of returning customers pool
+    # Plot 3: Development of returning customers pool
     # Initialize the figure
     fig, ax = plt.subplots(nrows=1, ncols=1)
     sns.lineplot(x='time', y='returns_size', data=sim)
@@ -130,7 +133,7 @@ def plot_sim(sim, ind):
     plt.savefig(output_dir + '/returns_size_' + ind + '.png')
     plt.close()
 
-    # revenue per day
+    # Plot 4: Revenue per day
     # Get the total amount spent over the five years per day
     fig, ax = plt.subplots(nrows=1, ncols=1)
     daily_rev = sim.groupby('date', as_index=False)['payments'].sum()
@@ -141,7 +144,7 @@ def plot_sim(sim, ind):
     plt.savefig(output_dir + '/daily_rev_' + ind + '.png')
     plt.close()
 
-    # customer composition per day stacked
+    # Plot 5: Customer composition per day stacked
     fig, ax = plt.subplots(nrows=1, ncols=1)
     cust_list = ['one_time', 'returning',
                  'hipster', 'trip_advisor']
@@ -161,13 +164,13 @@ def plot_sim(sim, ind):
     plt.savefig(output_dir + '/cust_comp_stack_' + ind + '.png')
     plt.close()
 
-
-def meta_sim(params, ind):
-    # visualize object hierarchy for simulation case
-    objgraph.show_refs(Customer, filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)],
-                       max_depth=2,
-                       filename=output_dir + "/" + ind + '_CustomerMethods.png')
-
-    objgraph.show_refs(Customer(params['class_params']),
-                       filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2,
-                       filename=output_dir + "/" + ind + '_CustomerAttributes.png')
+# Uncomment if you want to conduct meta analysis on classes
+# def meta_sim(params, ind):
+#     # visualize object hierarchy for simulation case
+#     objgraph.show_refs(Customer, filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)],
+#                        max_depth=2,
+#                        filename=output_dir + "/" + ind + '_CustomerMethods.png')
+#
+#     objgraph.show_refs(Customer(params['class_params']),
+#                        filter=lambda x: [(inspect.ismethod(i)) for i in inspect.getmembers(x)], max_depth=2,
+#                        filename=output_dir + "/" + ind + '_CustomerAttributes.png')

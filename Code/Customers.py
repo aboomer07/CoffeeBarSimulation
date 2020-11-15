@@ -1,14 +1,11 @@
 ################################################################################
 # Part 2 of Python Final Project: Simulation of Coffee Drinkers
 # Group Partners: Andy Boomer and Jacob Pichelmann
-# Part 2 involves setting up customer classes
+# This script introduces customer classes used in the subsequent simulation
 ################################################################################
 
-
-# import probabilities and lists of things offered at the coffee shop
-
 # Import libraries
-import uuid
+import uuid  # assign customers unique IDs
 import names  # just for fun, can be installed with sudo pip
 import numpy as np
 import pandas as pd
@@ -54,7 +51,8 @@ class Customer(object):
               str(self.amount_spent) + ' at ' + pd.to_datetime(str(self.time)).strftime("%d/%m/%Y, %H:%M"))
 
 
-class ReturningCustomer(Customer):  # Define a returning customer
+class ReturningCustomer(Customer):
+    # Returning customers are a sub class of Customer
     def __init__(self, params):
         super(ReturningCustomer, self).__init__(params)
         self.customer_type = 'returning'
@@ -82,8 +80,8 @@ class ReturningCustomer(Customer):  # Define a returning customer
 
 
 class Hipster(ReturningCustomer):
-    # Hipsters are a type of returning customer, we chose to make it a subclass
-    # In case we want the hipster to have some different behavior later
+    # Hipsters are a type of ReturningCustomer, we chose to make it a sub class
+    # to allow them to have some different behavior
     def __init__(self, params):
         super(Hipster, self).__init__(params)
         self.customer_type = 'hipster'
@@ -113,7 +111,7 @@ class Hipster(ReturningCustomer):
 
 
 class TripAdvisorCustomer(Customer):
-    # Trip advisor customer is a subclass of customer that adds a random tip to purchase
+    # Trip advisor customer is a sub class of Customer that adds a random tip to purchase
     def __init__(self, params):
         super(TripAdvisorCustomer, self).__init__(params)
         self.customer_type = 'trip_advisor'

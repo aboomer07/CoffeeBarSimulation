@@ -1,8 +1,15 @@
-# Import all the functions and objects from other project files
+################################################################################
+# Final Part of Python Final Project: Simulation of Coffee Shop
+# Group Partners: Andy Boomer and Jacob Pichelmann
+# This script executes and evaluates the simulation.
+################################################################################
+
+# Import all functions and objects from other project files
 from Code.SimParams import *
 from Code.SimEval import *
 from Code.SimFunc import *
 
+# import python libraries
 import datetime
 
 # set up simulation data frame
@@ -35,8 +42,10 @@ sim5_df = run_simulation(sim_df, Sim5)
 print((datetime.datetime.now() - a).seconds)
 
 # For each sim in 1-5, call the two evaluation functions
-# Showcase sim gets the printed summary
-# Plot sim creates the set of analysis plots
+# showcase_sim gets the printed summary
+# plot_sim creates the set of analysis plots
+# use store_sim if you want to export the simulation to csv
+
 showcase_sim(sim1_df, Sim1, 2)
 plot_sim(sim1_df, 'sim_1')
 
@@ -51,5 +60,3 @@ plot_sim(sim4_df, 'sim_4')
 
 showcase_sim(sim5_df, Sim5, 2)
 plot_sim(sim5_df, 'sim_5')
-
-meta_sim(Sim1, 'sim_1')

@@ -1,7 +1,8 @@
 ################################################################################
-# Part 1 of Python Final Project: Simulation of Coffee Drinkers
+# Part 1A of Python Final Project: Simulation of Coffee Drinkers
 # Group Partners: Andy Boomer and Jacob Pichelmann
-# Part 1 involves exploring sample coffee dataset, creating probabilities
+# This script calculates purchase probabilities by time intervals to be used
+# as input in the subsequent simulation.
 ################################################################################
 
 ################################################################################
