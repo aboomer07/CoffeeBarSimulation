@@ -1,6 +1,7 @@
 # Simulating a Coffee Shop
 
 This project simulates customers visiting a coffee shop over a time span of 5 years. The following assumptions are made:
+
 * The simulation is one-dimensional, i.e. we model a single coffee shop that is visited by different types of customers. 
 The coffee shop does not observe any change in variables apart from a possible change in menu prices. 
 

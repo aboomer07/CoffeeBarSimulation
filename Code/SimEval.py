@@ -33,7 +33,7 @@ output_dir = curr_dir + "/Output"
 
 # Create a function to print some of the text related output from simulation
 def showcase_sim(sim, params, n_examples):
-    print('This showcases the results and functionality of simulated customer in the  following simulation:')
+    print('This showcases the results and functionality of simulated customers in the  following simulation:')
     print('Simulated period: ' + min(sim['time']).strftime("%d/%m/%Y, %H:%M") + ' to ' + max(sim['time']).strftime(
         "%d/%m/%Y, %H:%M") + ', n = ' + str(len(sim)))
 
